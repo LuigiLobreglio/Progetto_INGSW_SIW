@@ -3,8 +3,15 @@ package persistence;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.Account;
@@ -22,11 +29,12 @@ public class AccountDaoJDBC implements AccountDao {
 	public void save(Account account) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into Account( nome, cognome, età, sesso, indirizzo_email, password) values (?,?,?,?,?,?)";
+			String insert = "insert into Account( nome, cognome, data_nascita, sesso, indirizzo_email, password) values (?,?,?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
 			statement.setString(1, account.getNome());
 			statement.setString(2, account.getCognome());
-			statement.setInt(3, account.getEtà());
+			Date d= Date.valueOf(account.getData_nascita());
+			statement.setDate(3, d);		
 			statement.setString(4, account.getSesso());
 			statement.setString(5, account.getIndirizzoEmail());
 			
@@ -78,7 +86,38 @@ public class AccountDaoJDBC implements AccountDao {
 	@Override
 	public List<Account> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+
+		Connection connection = this.dataSource.getConnection();
+		List<Account> accounts = new LinkedList<>();
+		try {
+			Account account;
+			PreparedStatement statement;
+			String query = "select * from account";
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				account = new Account();
+				account.setNome(result.getString("nome"));				
+				account.setCognome(result.getString("cognome"));
+				account.setData_nascita(result.getDate("data_nascita").toString() );	
+				account.setSesso(result.getString("sesso"));
+				account.setIndirizzo_email(result.getString("indirizzo_email"));
+				account.setPassword(result.getString("password"));
+				
+				accounts.add(account);
+			}
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+		
+		System.out.println(accounts.size());
+		return accounts;
 	}
 
 	@Override

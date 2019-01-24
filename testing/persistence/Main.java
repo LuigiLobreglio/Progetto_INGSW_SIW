@@ -2,6 +2,8 @@ package persistence;
 
 import model.Account;
 import persistence.dao.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Main {
 
@@ -15,9 +17,9 @@ public class Main {
 		
 
 		AccountDao accountDao = new AccountDaoJDBC(dataSource);
-		Account account1 = new Account("Luigi", "Lobreglio", 22, "m", "luigi.lobreglio@gmail.com", "IngswSiw19");
+		Account account1 = new Account("Luigi", "Lobreglio","1995-10-09", "m", "luigi.lobreglio@gmail.com", "IngswSiw19");
 		accountDao.save(account1);
-
+ 
 
 		} 
 		catch (Exception e) {

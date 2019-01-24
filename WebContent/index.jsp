@@ -1,20 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" 
+prefix="c" %>
 <!DOCTYPE html>
-<!-- Template by Quackit.com -->
-<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license. 
-Although you can use them, for a more unique website, replace these images with your own. -->
-<html lang="en">
+<html lang="it">
 <head>
  
-    <meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <title>Benvenuto in BYMP</title>
+    
+    <script type="text/javascript" src='js/carousel.js'> </script>
+    <script src="js/jquery-3.2.1.min.js"></script>   
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <script src="css/js_style/bootstrap.min.js"></script>
+    
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles --> 
     <link href="css/custom.css" rel="stylesheet">
     
@@ -32,17 +37,14 @@ Although you can use them, for a more unique website, replace these images with 
 	.mySlides {display:none;}
 	</style>
 
-    <script type="text/javascript" src='js/carousel.js'> </script>
-    <script src="js/jquery-3.2.1.min.js"></script>    
-
 </head>
-
 
 <body>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
+           
             <!-- Logo and responsive toggle -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -55,6 +57,7 @@ Although you can use them, for a more unique website, replace these images with 
                 	<span class="glyphicon glyphicon-cutlery" ></span> <a class="titolo-logo" href="#"> BYMP</a>  <span class="glyphicon glyphicon-calendar"></span> 	
                 </div>
             </div>
+            
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbar">
             <form class="navbar-form navbar-left" action=null>
@@ -88,11 +91,18 @@ Although you can use them, for a more unique website, replace these images with 
                     </li>
                 </ul>
                 
-                 <ul class="nav navbar-nav navbar-right">
-      				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Iscriviti</a></li>
-      				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Accedi </a></li>
-    			</ul>
+                 <ul class="nav navbar-nav navbar-right">   
+                 	<c:if test="${nome == null}">
+						<li><a href="gestioneAccount/iscrivimi.jsp"><span class="glyphicon glyphicon-pencil"></span> Iscriviti </a></li>
+						<li><a href="doLogin"><span class="glyphicon glyphicon-log-in"></span> Accedi </a></li>
+					</c:if>						
+                 	<c:if test="${nome != null}">
+      					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, {$nome} !</a></li>
+						<li><a href="doLogin?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
+					</c:if>	
+    			</ul>	
             </div><!-- /.navbar-collapse -->
+            
         </div><!-- /.container -->
     </nav>
 
@@ -101,7 +111,7 @@ Although you can use them, for a more unique website, replace these images with 
 		<div class="container">
 	       	<h1><span class="glyphicon glyphicon-cutlery"> </span> BUY YOUR MEAL PLAN</h1>
 			<p>Devi uscire per fare la spesa, e vorresti farne a meno? <br></p>
-			<p>Finisci sempre per mangiare gli stessi cibi, senza conoscere le loro proprietà?</p>
+			<p>Finisci sempre per mangiare gli stessi cibi, senza conoscere le loro proprietà ?</p>
 			<p>Voresti pianificare la tua dieta, avere un carrello pronto con solo il necessario, <br>
 			e ricevere tutto comodamente dove vuoi? Allora sei nel posto giusto!
 			</p>

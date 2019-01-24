@@ -6,7 +6,7 @@ public abstract class DAOFactory {
 	
 	// --- Metodo fabbrica per la creazione di fabbriche concrete ---
 	
-	public static DAOFactory getDAOFactory(int whichFactory) {
+	public static DAOFactory getDAOFactory() {
 		
 			return new MySqlDAOFactory();
 	}
