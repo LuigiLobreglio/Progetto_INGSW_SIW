@@ -47,35 +47,61 @@ public class DisponibilitaEmail extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String email=request.getParameter("id_email");
-		System.out.println("1");
+		Boolean disp=true;
+		System.out.println("Prima di connettersi al database");
 		
 		AccountDao accountDao= SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
 
 		List<Account> accounts=accountDao.findAll();
-			System.out.println("lkjhgfd");
+		System.out.println("Dopo il recupero degli account");
 
-		response.setContentType("text");
-		JSONObject emailControllata= new JSONObject();
-		boolean disp=true;
+
 		for (Account a : accounts) {
 			if(a.getIndirizzoEmail().equals(email)) {
+					
 				disp=false;
 				break;
 			}
 		}
+		
+		System.out.println("Dopo il controllo sulle email degli account");
 
-	      try {
-			emailControllata.put("disponibile", disp);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if(disp) {
+			
+			JSONObject emailControllata = new JSONObject();
+			try {
+				emailControllata.put("disponibile", new Boolean(true));				   
+				String json = emailControllata.toString();
+				System.out.println("Disponibile");
+				out=response.getWriter();
+				out.write(json);
+				out.close();
+				} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-	        
-	      String json = emailControllata.toString();
-	      out=response.getWriter();
-	      out.write(json);
-	      out.close();
+		
+		else {
+			
+			JSONObject emailControllata = new JSONObject();
+			try {
+				emailControllata.put("disponibile", new Boolean(false));				   
+				String json = emailControllata.toString();
+				System.out.println("Non disponibile");
+				out=response.getWriter();
+				out.write(json);
+				out.close();
+				System.out.println("Dopo chiusura");
 
+				
+				} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -119,6 +119,43 @@ public class AccountDaoJDBC implements AccountDao {
 		System.out.println(accounts.size());
 		return accounts;
 	}
+	
+	
+	@Override
+	public Account findByEmailKey(String email) {
+		// TODO Auto-generated method stub
+		Connection connection = this.dataSource.getConnection();
+		Account account= new Account();
+
+		try {
+			PreparedStatement statement;
+			String query = "select * from account where indirizzo_email='"+email+"'";
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				account.setCodice(result.getLong("idAccount"));				
+				account.setNome(result.getString("nome"));				
+				account.setCognome(result.getString("cognome"));
+				account.setData_nascita(result.getDate("data_nascita").toString() );	
+				account.setSesso(result.getString("sesso"));
+				account.setIndirizzo_email(result.getString("indirizzo_email"));
+				account.setPassword(result.getString("password"));
+			}	
+			
+
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+		
+		return account;	
+
+	}
 
 	@Override
 	public void update(Account account) {
@@ -131,5 +168,6 @@ public class AccountDaoJDBC implements AccountDao {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

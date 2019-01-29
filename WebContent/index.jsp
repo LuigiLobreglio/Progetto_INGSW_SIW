@@ -17,8 +17,8 @@ prefix="c" %>
     <script src="js/jquery-3.2.1.min.js"></script>   
 
     <!-- Bootstrap Core CSS -->
+     <script src="css/js_style/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="css/js_style/bootstrap.min.js"></script>
     
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles --> 
     <link href="css/custom.css" rel="stylesheet">
@@ -94,11 +94,11 @@ prefix="c" %>
                  <ul class="nav navbar-nav navbar-right">   
                  	<c:if test="${nome == null}">
 						<li><a href="gestioneAccount/iscrivimi.jsp"><span class="glyphicon glyphicon-pencil"></span> Iscriviti </a></li>
-						<li><a href="doLogin"><span class="glyphicon glyphicon-log-in"></span> Accedi </a></li>
+						<li><a href="gestioneAccount/faiAccesso.jsp"><span class="glyphicon glyphicon-log-in"></span> Accedi </a></li>
 					</c:if>						
                  	<c:if test="${nome != null}">
-      					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, {$nome} !</a></li>
-						<li><a href="doLogin?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
+      					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, ${nome} !</a></li>
+						<li><a href="#?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
 					</c:if>	
     			</ul>	
             </div><!-- /.navbar-collapse -->
@@ -351,14 +351,7 @@ prefix="c" %>
 	</footer>
 
 	
-    <!-- jQuery -->
-    <script src="js/jquery-3.2.1.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-	
-	<!-- IE10 viewport bug workaround -->
-	<script src="js/ie10-viewport-bug-workaround.js"></script>
+ 
 	
 </body>
 
