@@ -75,7 +75,7 @@ public class RicercaProdotto extends HttpServlet {
 			idProdotto=null;
 		}
 		
-		else
+		else 
 			
 			idProdotto=Long.parseLong(request.getParameter("idProdotto"));
 		
