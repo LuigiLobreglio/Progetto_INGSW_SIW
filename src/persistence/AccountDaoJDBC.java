@@ -132,15 +132,20 @@ public class AccountDaoJDBC implements AccountDao {
 			String query = "select * from account where indirizzo_email='"+email+"'";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				account.setCodice(result.getLong("idAccount"));				
-				account.setNome(result.getString("nome"));				
-				account.setCognome(result.getString("cognome"));
-				account.setData_nascita(result.getDate("data_nascita").toString() );	
-				account.setSesso(result.getString("sesso"));
-				account.setIndirizzo_email(result.getString("indirizzo_email"));
-				account.setPassword(result.getString("password"));
-			}	
+			boolean empty=true;
+				while (result.next()) {
+					empty=false;
+					account.setCodice(result.getLong("idAccount"));				
+					account.setNome(result.getString("nome"));				
+					account.setCognome(result.getString("cognome"));
+					account.setData_nascita(result.getDate("data_nascita").toString() );	
+					account.setSesso(result.getString("sesso"));
+					account.setIndirizzo_email(result.getString("indirizzo_email"));
+					account.setPassword(result.getString("password"));
+				}
+				
+				if(empty)
+					account.setPassword("null");
 			
 
 		} catch (SQLException e) {
@@ -152,6 +157,7 @@ public class AccountDaoJDBC implements AccountDao {
 				throw new PersistenceException(e.getMessage());
 			}
 		}
+		
 		
 		return account;	
 

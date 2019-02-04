@@ -69,10 +69,8 @@ public class ControlloDatiAccesso extends HttpServlet {
 	*/		
 			AccountDao accDao = SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
 			Account account=accDao.findByEmailKey(request.getParameter("indEmail"));
-			System.out.println("Dopo il recupero degli account");
 
-
-				if(account!=null) {
+				if(!account.getPassword().equals("null")) {
 					
 					String password= request.getParameter("password");
 					MessageDigest md;
@@ -94,7 +92,7 @@ public class ControlloDatiAccesso extends HttpServlet {
 							
 							password=hexString.toString();
 							System.out.println(password);
-							System.out.println(account.getPassword());
+							System.out.println("qui"+account.getPassword());
 							
 							if(password.equals(account.getPassword()))
 							{
@@ -113,13 +111,18 @@ public class ControlloDatiAccesso extends HttpServlet {
 									e.printStackTrace();
 								}
 								
+							
 								
-				*/
-								response.sendRedirect("/E-commerce/index.jsp");
+				*/				
+								response.sendRedirect(request.getContextPath()+"/gestioneAccount/accessoConsentito.jsp");
+								//request.getRequestDispatcher("gestioneAccount/accessoConsentito.jsp").forward(request, response);
+
+
 							}
 							
 							else
 							{
+								System.out.println("password_errata");
 								request.getSession().setAttribute("nome", null);
 								request.getSession().setAttribute("idAccount", null);
 						/*		JSONObject result= new JSONObject();
@@ -136,7 +139,9 @@ public class ControlloDatiAccesso extends HttpServlet {
 								}
 								*/
 								request.getSession().setAttribute("errore", new String("password_errata"));
-								response.sendRedirect("/E-commerce/gestioneAccount/accessoNegato.jsp");
+								//response.sendRedirect("/E-commerce/gestioneAccount/accessoNegato.jsp");
+								request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
+
 
 				
 							}
@@ -149,6 +154,7 @@ public class ControlloDatiAccesso extends HttpServlet {
 				}
 				
 				else {
+					System.out.println("email_errata");
 					request.getSession().setAttribute("nome", null);
 					request.getSession().setAttribute("idAccount", null);
 			/*		JSONObject result= new JSONObject();
@@ -165,7 +171,8 @@ public class ControlloDatiAccesso extends HttpServlet {
 					}
 					*/
 					request.getSession().setAttribute("errore", new String("email_errata"));
-					response.sendRedirect("/E-commerce/gestioneAccount/accessoNegato.jsp");
+					request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
+
 					
 				}
 /*			

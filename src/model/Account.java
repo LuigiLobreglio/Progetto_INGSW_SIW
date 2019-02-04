@@ -1,7 +1,6 @@
 package model;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
+
 
 public class Account {
 
@@ -29,11 +28,7 @@ public Account(String nome, String cognome, String data_nascita, String sesso, S
 }
 	
 
-	public void setCodice(Long id) {
-		// TODO Auto-generated method stub
-		this.id=id;
-		
-	}
+
 
 	public long getidAccount() {
 		// TODO Auto-generated method stub
@@ -68,6 +63,11 @@ public Account(String nome, String cognome, String data_nascita, String sesso, S
 	public String getPassword() {
 		// TODO Auto-generated method stub
 		return this.password;
+	}
+	
+	public void setCodice(Long id) {
+		// TODO Auto-generated method stub
+		this.id=id;	
 	}
 
 	public void setNome(String nome) {

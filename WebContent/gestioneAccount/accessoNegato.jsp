@@ -11,16 +11,18 @@ prefix="c" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Accesso Negato!</title>
+    <title>Accesso Consentito!</title>
     
-    <script src="../js/jquery-3.2.1.min.js"></script>   
+    <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>   
+    <script type="text/javascript" src='${pageContext.request.contextPath}/gestioneRicerca/gestione_Ricerca.js'> </script>
+    
 
     <!-- Bootstrap Core CSS -->
-     <script src="../css/js_style/bootstrap.min.js"></script>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+     <script src="${pageContext.request.contextPath}/css/js_style/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles --> 
-    <link href="../css/custom.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
      
@@ -32,11 +34,12 @@ prefix="c" %>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script src="gestione_Account.js"></script>
+    <script src="${pageContext.request.contextPath}/gestioneAccount/gestione_Account.js"></script>
    
 
 
 </head>
+
 <body>
  <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -57,17 +60,25 @@ prefix="c" %>
             
             <!-- Navbar links  -->
             <div class="collapse navbar-collapse" id="navbar">
-            <form class="navbar-form navbar-left" action=null>
+            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto?tipo=byNome">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" placeholder="Cerca un prodotto!" >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" >
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>
       					</button>
     				</div>
   				</div>
+  					
+			<div id="proviamo" class="sfondo_suggerimenti"  >
+					<div class="container_suggerimenti" style="display:none">
+						<ul id="lista-suggerimenti">
+
+						</ul>
+					</div>
+			</div>
 			</form>
-            
+			
                 <ul class="nav navbar-nav navbar-center">
                     <li class="active">
                         <a href="#">Pagina iniziale</a>
@@ -89,13 +100,13 @@ prefix="c" %>
                 </ul>
                 
                  <ul class="nav navbar-nav navbar-right">   
-					<c:if test="${nome == null}">
+                 	<c:if test="${nome == null}">
 						<li><a href="gestioneAccount/iscrivimi.jsp"><span class="glyphicon glyphicon-pencil"></span> Iscriviti </a></li>
 						<li><a href="gestioneAccount/faiAccesso.jsp"><span class="glyphicon glyphicon-log-in"></span> Accedi </a></li>
 					</c:if>						
                  	<c:if test="${nome != null}">
       					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, ${nome} !</a></li>
-						<li><a href="#?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
+						<li><a href="controllaPermessi?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
 					</c:if>	
     			</ul>	
             </div><!-- /.navbar-collapse -->
@@ -121,7 +132,7 @@ prefix="c" %>
 </c:if>	   
 
 
-  <form id="moduloAccesso" class="form-horizontal" method="post" action="../inviaCredenziali">
+  <form id="moduloAccesso" class="form-horizontal" method="post" action="${pageContext.request.contextPath}/inviaCredenziali">
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="indEmail">Indirizzo Email</label>
 			<div class="col-sm-5">
@@ -146,7 +157,73 @@ prefix="c" %>
     </div>
     
 
+	<!-- Footer -->
+	<footer>
+	
+		<h1 class="text-center">Find Us</h1>
+		<!-- Map -->
+		<div class="footer-map"></div>	
+			
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 footer-info-item text-center">
+						<p class="lead">
+							31 Spooner Street, Quahog, Rhode Island
+						</p>
+						<h2>Contattaci</h2>
+						<p class="lead"><span class="glyphicon glyphicon-phone-alt"></span> +39 333 33333333<br>
+						luigi.lobreglio@gmail.com <br> dux920@gmail.com </p>
+						
+					</div>
+				</div>
+			</div>
 
+		<!-- Footer Links -->
+		<div class="footer-info">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 footer-info-item">
+						<h3>Informazioni</h3>
+						<ul class="list-unstyled">
+							<li><a href="#">Chi siamo</a></li>
+							<li><a href="#">Servizio clienti</a></li>
+							<li><a href="#">Informativa Privacy</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-4 footer-info-item">
+						<h3>Il Mio Account</h3>
+						<ul class="list-unstyled">
+							<li><a href="#">Accedi</a></li>
+							<li><a href="#">La mia pianificazione alimentare</a></li>
+							<li><a href="#">Il mio carrello</a></li>
+							<li><a href="#">I miei ordini</a></li>
+						</ul>	
+					</div>
+					<div class="col-sm-4 footer-info-item">
+						<h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
+						<p>Iscriviti per ricevere offerte esclusive</p>
+						<div class="input-group">
+							<input type="email" class="form-control" placeholder="Inserisci il tuo indirizzo email">
+							<span class="input-group-btn">
+								<button class="btn btn-primary" type="button">
+									Sottoscrivi!
+								</button>
+							</span>
+						</div>
+					</div>
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+        </div>
+        
+        <!-- Copyright etc -->
+        <div class="small-print">
+        	<div class="container">
+        		<p><a href="#">Termini &amp; Condizioni</a> | <a href="#">Informativa Privacy</a> | <a href="#">Contatti</a></p>
+        		<p>Copyright &copy; bymp.it 2019 </p>
+        	</div>
+        </div>
+        
+	</footer>
 
 </body>
 </html>

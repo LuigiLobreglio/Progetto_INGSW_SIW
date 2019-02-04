@@ -1,6 +1,7 @@
 package persistence;
 
 import persistence.dao.AccountDao;
+import persistence.dao.ProdottoDao;
 
 class MySqlDAOFactory extends DAOFactory{
 
@@ -32,6 +33,13 @@ private static  DataSource dataSource;
 	public AccountDao getAccountDAO() {
 		// TODO Auto-generated method stub
 		return new AccountDaoJDBC(dataSource);
+	}
+
+
+	@Override
+	public ProdottoDao getProdottoDAO() {
+		// TODO Auto-generated method stub
+		return new ProdottoDaoJDBC(dataSource);
 	}
 
 }

@@ -2,6 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" 
 prefix="c" %>
+
+    <%
+    response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
+    response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
+    response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
+    response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
+    %>
+    
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -13,17 +21,19 @@ prefix="c" %>
 
     <title>Benvenuto in BYMP</title>
     
-    <script type="text/javascript" src='js/carousel.js'> </script>
-    <script src="js/jquery-3.2.1.min.js"></script>   
+    <script type="text/javascript" src='${pageContext.request.contextPath}/js/carousel.js'> </script>
+    <script type="text/javascript" src='${pageContext.request.contextPath}/gestioneRicerca/gestione_Ricerca.js'> </script>
+    <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>   
 
     <!-- Bootstrap Core CSS -->
-     <script src="css/js_style/bootstrap.min.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+     <script src="${pageContext.request.contextPath}/css/js_style/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles --> 
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    
      
         
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -36,6 +46,8 @@ prefix="c" %>
 	<style>
 	.mySlides {display:none;}
 	</style>
+
+
 
 </head>
 
@@ -60,16 +72,25 @@ prefix="c" %>
             
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbar">
-            <form class="navbar-form navbar-left" action=null>
+            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto?tipo=byNome">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" placeholder="Cerca un prodotto!" >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" >
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>
       					</button>
     				</div>
   				</div>
+  					
+			<div id="proviamo" class="sfondo_suggerimenti"  >
+					<div class="container_suggerimenti" style="display:none">
+						<ul id="lista-suggerimenti">
+
+						</ul>
+					</div>
+			</div>
 			</form>
+		
             
                 <ul class="nav navbar-nav navbar-center">
                     <li class="active">
@@ -98,7 +119,7 @@ prefix="c" %>
 					</c:if>						
                  	<c:if test="${nome != null}">
       					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, ${nome} !</a></li>
-						<li><a href="#?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
+						<li><a href="${pageContext.request.contextPath}/controllaPermessi?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
 					</c:if>	
     			</ul>	
             </div><!-- /.navbar-collapse -->
@@ -112,7 +133,7 @@ prefix="c" %>
 	       	<h1><span class="glyphicon glyphicon-cutlery"> </span> BUY YOUR MEAL PLAN</h1>
 			<p>Devi uscire per fare la spesa, e vorresti farne a meno? <br></p>
 			<p>Finisci sempre per mangiare gli stessi cibi, senza conoscere le loro proprietà ?</p>
-			<p>Voresti pianificare la tua dieta, avere un carrello pronto con solo il necessario, <br>
+			<p>Vorresti pianificare la tua dieta, avere un carrello pronto con solo il necessario, <br>
 			e ricevere tutto comodamente dove vuoi? Allora sei nel posto giusto!
 			</p>
 		</div>

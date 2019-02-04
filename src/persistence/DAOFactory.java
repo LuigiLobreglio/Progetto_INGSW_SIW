@@ -1,6 +1,7 @@
 package persistence;
 
 import persistence.dao.AccountDao;
+import persistence.dao.ProdottoDao;
 
 public abstract class DAOFactory {
 	
@@ -17,5 +18,6 @@ public abstract class DAOFactory {
 	 * Metodi per accedere ai dati degli oggetti dell'applicazione
 	 */
 	public abstract AccountDao getAccountDAO();
+	public abstract ProdottoDao getProdottoDAO();
 
 }

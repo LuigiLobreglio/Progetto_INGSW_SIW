@@ -66,11 +66,10 @@ public class IscrizioneAccount extends HttpServlet {
 			account.setData_nascita(request.getParameter("dataNascita"));
 			account.setIndirizzo_email(request.getParameter("email"));	
 			account.setPassword(request.getParameter("password"));
-			
-			System.out.println("olikujyht");
-		
+					
 			AccountDao accDao = SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
 			accDao.save(account);
+			
 			response.sendRedirect("/E-commerce/gestioneAccount/iscrizioneEffettuata.jsp");
 
 		/*	RequestDispatcher rd = request.getRequestDispatcher("/gestioneAccount/iscrizioneEffettuata.jsp");

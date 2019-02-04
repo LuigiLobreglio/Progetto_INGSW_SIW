@@ -3,19 +3,21 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" 
 prefix="c" %>
 
+
     <%
     response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
     response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
     response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
     response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
     String nome = (String) session.getAttribute("nome");
-
-    if (null != nome) {
-        RequestDispatcher rd = request.getRequestDispatcher("/gestioneAccount/accessoConsentito.jsp");
-        rd.forward(request, response);
-     }
+    System.out.println(nome);
+    if (null == nome) {
+    	
+       RequestDispatcher rd = request.getRequestDispatcher("/gestioneAccount/faiAccesso.jsp");
+       rd.forward(request, response);
+    }
+    
     %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -25,19 +27,18 @@ prefix="c" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Benvenuto fra noi!</title>
+    <title>Accesso Consentito!</title>
     
-    <script src="../js/jquery-3.2.1.min.js"></script>   
+    <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>   
     <script type="text/javascript" src='${pageContext.request.contextPath}/gestioneRicerca/gestione_Ricerca.js'> </script>
- 
     
 
     <!-- Bootstrap Core CSS -->
-     <script src="../css/js_style/bootstrap.min.js"></script>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+     <script src="${pageContext.request.contextPath}/css/js_style/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles --> 
-    <link href="../css/custom.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
      
@@ -49,9 +50,10 @@ prefix="c" %>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script src="gestione_Account.js"></script>
- 
-    
+    <script src="${pageContext.request.contextPath}/gestioneAccount/gestione_Account.js"></script>
+   
+
+
 </head>
 <body>
  <!-- Navigation -->
@@ -119,7 +121,7 @@ prefix="c" %>
 					</c:if>						
                  	<c:if test="${nome != null}">
       					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Ciao, ${nome} !</a></li>
-						<li><a href="controllaPermessi?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
+						<li><a href="${pageContext.request.contextPath}/controllaPermessi?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a></li>
 					</c:if>	
     			</ul>	
             </div><!-- /.navbar-collapse -->
@@ -127,12 +129,15 @@ prefix="c" %>
         </div><!-- /.container -->
     </nav>
     
-    <div class="primoAccesso" style="margin-top: 100px; margin-left: 100px">
-	<h2>Iscrizione avvenuta con successo!</h2>
-	<p> <span class="glyphicon glyphicon-hand-right"></span> <a href="faiAccesso.jsp">Accedi</a> per la prima volta </p> 
+    <div style="margin-top: 100px; margin-left: 100px">
+		<h2>Bentornato, ${nome} !</h2>
+		<p>Cosa vuoi fare?</p>    
 	</div>
     
- 
+    <div class="container-fluid">
+   
+    </div>
+    
     	<!-- Footer -->
 	<footer>
 	
