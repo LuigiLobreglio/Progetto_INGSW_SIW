@@ -31,7 +31,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			statement.setString(3, prodotto.getNomeCommerciale());		
 			statement.setString(4, prodotto.getImmagine());
 			statement.setString(5, prodotto.getDescrizione());
-			statement.setInt(6, prodotto.getPrezzo());
+			statement.setDouble(6, prodotto.getPrezzo());
 				
 			statement.executeUpdate();
 			
@@ -86,8 +86,33 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 
 	@Override
 	public Prodotto findByPrimaryKey(Long idProdotto) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = this.dataSource.getConnection();
+		Prodotto prodotto= new Prodotto();
+		try {
+			PreparedStatement statement;
+			String query = "select * from prodotto where idProdotto='"+idProdotto+"'";
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				prodotto = new Prodotto();
+				prodotto.setIdProdotto(result.getLong("idProdotto"));
+				prodotto.setCategoria(result.getString("categoria"));
+				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
+				prodotto.setImmagine(result.getString("immagine"));
+				prodotto.setDescrizione(result.getString("descrizione"));	
+				prodotto.setPrezzo(result.getDouble("prezzo"));				
+						}
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+		
+		return prodotto;
 	}
 
 	
@@ -107,11 +132,11 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			while (result.next()) {
 				prodotto = new Prodotto();
 				prodotto.setIdProdotto(result.getLong("idProdotto"));
-				prodotto.setCategoria(result.getString("sesso"));
+				prodotto.setCategoria(result.getString("categoria"));
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getInt("prezzo"));				
+				prodotto.setPrezzo(result.getDouble("prezzo"));				
 			
 				prodotti.add(prodotto);
 			}
@@ -137,7 +162,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 		List<String> risultati= new LinkedList<>();
 		try {
 			PreparedStatement statement;
-			String query = "select nomeCommerciale from prodotto where LOWER(nomeCommerciale) regexp  LOWER('.*\\s"+stringaRicerca+".*|^"+stringaRicerca+".*')";
+			String query = "select nomeCommerciale from prodotto where LOWER(nomeCommerciale) regexp  LOWER('.*\\\\s"+stringaRicerca+".*|^"+stringaRicerca+".*')";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -171,21 +196,21 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			String query = "select distinct * from prodotto where ";
 			for(int i=0; i<nomeCommerciale.length;i++) {
 				
-				query=query+"LOWER(nomeCommerciale) regexp LOWER('^"+nomeCommerciale[i]+"$|.*\\s"+nomeCommerciale[i]+"\\s.*|^"+nomeCommerciale[i]+"\\s.*|.*\\s"+nomeCommerciale[i]+"$') AND";
+				query=query+"LOWER(nomeCommerciale) regexp LOWER('^"+nomeCommerciale[i]+"$|.*\\\\s"+nomeCommerciale[i]+"\\\\s.*|^"+nomeCommerciale[i]+"\\\\s.*|.*\\\\s"+nomeCommerciale[i]+"$') AND ";
 			}
-			query= query.substring(0, query.length() - 3);
+			query= query.substring(0, query.length() - 4);
 
-			
+			System.out.println(query);
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				prodotto = new Prodotto();
 				prodotto.setIdProdotto(result.getLong("idProdotto"));
-				prodotto.setCategoria(result.getString("sesso"));
+				prodotto.setCategoria(result.getString("categoria"));
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getInt("prezzo"));				
+				prodotto.setPrezzo(result.getDouble("prezzo"));				
 			
 				prodotti.add(prodotto);
 			}
@@ -220,7 +245,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			
 			}
 			String query_cat=" ";
-			if(categoria!=null){
+			if(!categoria.equals("---")){
 				if(idProdotto!=null)
 					query_cat=" AND ";
 					
@@ -228,21 +253,21 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			}
 			
 			String query_nome=" ";
-			if(!(nomeCommerciale.length==0)){
-				if(idProdotto!=null || categoria!=null)
+			if(!(nomeCommerciale[0].isEmpty())){
+				if(idProdotto!=null || !categoria.equals("---"))
 					query_nome=" AND ";
 					
 					for(int i=0; i<nomeCommerciale.length;i++) {
 					
-						query_nome=query_nome+"LOWER(nomeCommerciale) regexp LOWER('^"+nomeCommerciale[i]+"$|.*\\s"+nomeCommerciale[i]+"\\s.*|^"+nomeCommerciale[i]+"\\s.*|.*\\s"+nomeCommerciale[i]+"$') AND";
+						query_nome=query_nome+"LOWER(nomeCommerciale) regexp LOWER('^"+nomeCommerciale[i]+"$|.*\\\\s"+nomeCommerciale[i]+"\\\\s.*|^"+nomeCommerciale[i]+"\\\\s.*|.*\\\\s"+nomeCommerciale[i]+"$') AND ";
 					}
 					
-					query_nome= query_nome.substring(0, query_nome.length() - 3);
+					query_nome= query_nome.substring(0, query_nome.length() - 4);
 			}
 			
 			String query_prezzo_min=" ";
 			if(prezzo_min!=0){
-				if(idProdotto!=null || categoria!=null || !(nomeCommerciale.length==0))
+				if(idProdotto!=null ||  !categoria.equals("---") || !(nomeCommerciale[0].isEmpty()))
 					query_prezzo_min=" AND ";
 					
 				query_prezzo_min=query_prezzo_min+"prezzo>="+prezzo_min+" ";
@@ -250,24 +275,24 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 
 			String query_prezzo_max=" ";
 			if(prezzo_max!=Integer.MAX_VALUE){
-				if(idProdotto!=null || categoria!=null || !(nomeCommerciale.length==0)|| prezzo_min!=0)
+				if(idProdotto!=null || !categoria.equals("---") || !(nomeCommerciale[0].isEmpty())|| prezzo_min!=0)
 					query_prezzo_max=" AND ";
 			
 				query_prezzo_max=query_prezzo_max+"prezzo<="+prezzo_max+" ";
 			}
 			
 			query=query+query_id+query_cat+query_nome+query_prezzo_min+query_prezzo_max;
-			
+			System.out.println(query);
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				prodotto = new Prodotto();
 				prodotto.setIdProdotto(result.getLong("idProdotto"));
-				prodotto.setCategoria(result.getString("sesso"));
+				prodotto.setCategoria(result.getString("categoria"));
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getInt("prezzo"));				
+				prodotto.setPrezzo(result.getDouble("prezzo"));				
 			
 				prodotti.add(prodotto);
 			}

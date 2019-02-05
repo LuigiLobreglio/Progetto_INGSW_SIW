@@ -2,6 +2,7 @@ package persistence;
 
 import persistence.dao.AccountDao;
 import persistence.dao.ProdottoDao;
+import persistence.dao.VoceProdottoDao;
 
 public abstract class DAOFactory {
 	
@@ -19,5 +20,6 @@ public abstract class DAOFactory {
 	 */
 	public abstract AccountDao getAccountDAO();
 	public abstract ProdottoDao getProdottoDAO();
+	public abstract VoceProdottoDao getVoceProdottoDAO();
 
 }

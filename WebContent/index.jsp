@@ -72,9 +72,10 @@ prefix="c" %>
             
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbar">
-            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto?tipo=byNome">
+            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" required>
+    				<input id="spazio-ricerca" type="hidden" name="tipo"  value="byNome" >
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>

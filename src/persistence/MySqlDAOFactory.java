@@ -2,6 +2,7 @@ package persistence;
 
 import persistence.dao.AccountDao;
 import persistence.dao.ProdottoDao;
+import persistence.dao.VoceProdottoDao;
 
 class MySqlDAOFactory extends DAOFactory{
 
@@ -40,6 +41,13 @@ private static  DataSource dataSource;
 	public ProdottoDao getProdottoDAO() {
 		// TODO Auto-generated method stub
 		return new ProdottoDaoJDBC(dataSource);
+	}	
+	
+	
+	@Override
+	public VoceProdottoDao getVoceProdottoDAO() {
+		// TODO Auto-generated method stub
+		return new VoceProdottoDaoJDBC(dataSource);
 	}
 
 }

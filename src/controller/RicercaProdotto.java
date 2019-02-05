@@ -43,69 +43,98 @@ public class RicercaProdotto extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		if(request.getParameter("tipo").toString()=="byNome") {
+		
+		System.out.println(request.getParameter("tipo").toString());
+		if(request.getParameter("tipo").toString().equals("byNome") ) {
 
 			String[] nomeCommerciale=request.getParameter("nomeCommerciale").toString().split("\\s+");
 			for(int i=0; i<nomeCommerciale.length;i++) {
 				
-				nomeCommerciale[i].replaceAll("'", "\\\\'");
+				nomeCommerciale[i]=nomeCommerciale[i].replaceAll("'", "\\\\'");
 			}
 
 			ProdottoDao prodottoDao=SingletonDatabaseManager.getInstance().getDaoFactory().getProdottoDAO();
 			
 			List<Prodotto> prodottiRicerca= prodottoDao.findByNomeCommerciale(nomeCommerciale);
-			
-			request.setAttribute("prodotti", prodottiRicerca  );
-			RequestDispatcher rd = request.getRequestDispatcher("vistaProdotti.jsp");
+			System.out.println(prodottiRicerca.size());
+			request.getSession().setAttribute("prodotti", prodottiRicerca  );
+			request.getSession().setAttribute("inizio", false);
+			RequestDispatcher rd = request.getRequestDispatcher("gestioneRicerca/vistaProdotti.jsp");
 			rd.forward(request, response);
 			
 		}
 		
-		Long idProdotto;
-		String categoria;
-		String nomeCommerciale;
-		int prezzoMin;
-		int prezzoMax;
-		
+		else if(request.getParameter("tipo").toString().equals("avanzata") ) {
 
+			Long idProdotto;
+			String categoria;
+			String[] nomeCommerciale=null;
+			int prezzoMin;
+			int prezzoMax;
 
-		//idProdotto
-		if(request.getParameter("idProdotto").isEmpty()) {
+			//idProdotto
+			if(request.getParameter("idProdotto").isEmpty()) { 
+				
+				idProdotto=null;
+			}
 			
-			idProdotto=null;
+			else 
+				
+				idProdotto=Long.parseLong(request.getParameter("idProdotto"));
+	
+			//categoria		
+			categoria=request.getParameter("categoria");
+			
+			//nomeCommerciale		
+			System.out.println(request.getParameter("nomeCommerciale").toString().isEmpty());
+
+			nomeCommerciale=request.getParameter("nomeCommerciale").toString().split("\\s+");
+			for(int i=0; i<nomeCommerciale.length;i++) {
+				
+				nomeCommerciale[i]=nomeCommerciale[i].replaceAll("'", "\\\\'");
+			}
+						System.out.println(nomeCommerciale[0].isEmpty());
+			//prezzomin		
+			if(request.getParameter("prezzoMin").isEmpty()) 
+				
+				prezzoMin=0;
+			
+			else
+				
+				prezzoMin=Integer.parseInt(request.getParameter("prezzoMin"));
+			
+			
+			//prezzoMax
+			if(request.getParameter("prezzoMax").isEmpty()) 
+				
+				prezzoMax=Integer.MAX_VALUE;
+			
+			else
+				
+				prezzoMax=Integer.parseInt(request.getParameter("prezzoMax"));
+			
+			if(request.getParameter("idProdotto").isEmpty() && request.getParameter("categoria").toString().equals("---") && nomeCommerciale[0].isEmpty() && request.getParameter("prezzoMin").isEmpty() && request.getParameter("prezzoMax").isEmpty()){
+				
+				request.getSession().setAttribute("prodotti", null);
+				request.getSession().setAttribute("inizio", false);
+				RequestDispatcher rd = request.getRequestDispatcher("gestioneRicerca/vistaProdotti.jsp");
+				rd.forward(request, response);
+			}
+			else {
+				
+				ProdottoDao prodottoDao=SingletonDatabaseManager.getInstance().getDaoFactory().getProdottoDAO();
+				
+				List<Prodotto> prodottiRicercaAvanzata=prodottoDao.findByParametriAvanzati(idProdotto, categoria, nomeCommerciale, prezzoMin, prezzoMax);
+			
+				request.getSession().setAttribute("prodotti", prodottiRicercaAvanzata);
+				request.getSession().setAttribute("inizio", false);
+				RequestDispatcher rd = request.getRequestDispatcher("gestioneRicerca/vistaProdotti.jsp");
+				rd.forward(request, response);
+			}
+			
 		}
 		
-		else 
-			
-			idProdotto=Long.parseLong(request.getParameter("idProdotto"));
-		
-		
-		categoria=request.getParameter("categoria");
-		nomeCommerciale=request.getParameter("nomeCommerciale");
-		
-		//prezzomin		
-		if(request.getParameter("prezzoMin").isEmpty()) 
-			
-			prezzoMin=0;
-		
-		else
-			
-			prezzoMin=Integer.parseInt(request.getParameter("prezzoMin"));
-		
-		
-		//prezzoMax
-		if(request.getParameter("prezzoMax").isEmpty()) 
-			
-			prezzoMax=Integer.MAX_VALUE;
-		
-		else
-			
-			prezzoMax=Integer.parseInt(request.getParameter("prezzoMax"));
-		
-		
-		ProdottoDao prodottoDao=SingletonDatabaseManager.getInstance().getDaoFactory().getProdottoDAO();
-		
-	//	List<Prodotto> prodottoRicercaAvanzata=prodottoDao.findByParametriAvanzati(idProdotto, categoria, nomeCommerciale, prezzoMin, prezzoMax);
+
 	}
 
 	/**

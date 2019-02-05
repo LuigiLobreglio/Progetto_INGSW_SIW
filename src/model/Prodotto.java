@@ -12,11 +12,11 @@ public class Prodotto {
 	private String nomeCommerciale;
 	private String immagine;
 	private String descrizione;
-	private int prezzo;
+	private double prezzo;
 	
 	public Prodotto() {}
 	
-	public Prodotto( Long idProdotto, String categoria, String nomeCommerciale, String immagine, String descrizione,int prezzo) {
+	public Prodotto( Long idProdotto, String categoria, String nomeCommerciale, String immagine, String descrizione,double prezzo) {
 		
 		this.idProdotto=idProdotto;
 		this.categoria=Categoria.valueOf(categoria);
@@ -54,7 +54,7 @@ public class Prodotto {
 		return this.descrizione;
 	}
 
-	public int getPrezzo() {
+	public double getPrezzo() {
 		// TODO Auto-generated method stub
 		return this.prezzo;
 	}
@@ -86,7 +86,7 @@ public class Prodotto {
 		this.descrizione=descrizione;
 	}
 
-	public void setPrezzo(int prezzo) {
+	public void setPrezzo(double prezzo) {
 		// TODO Auto-generated method stub
 		this.prezzo=prezzo;
 		

@@ -21,10 +21,12 @@ prefix="c" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Scegli i tuoi prodotti!</title>
+    <title>Il tuo carrello!</title>
+        <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>   
     
-    <script type="text/javascript" src='${pageContext.request.contextPath}/gestioneRicerca/gestione_Ricerca.js'> </script>
-    <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>   
+    <script type="text/javascript" src='${pageContext.request.contextPath}/gestioneCarrello/gestioneCarrello.js'> </script>
+
+
 
     <!-- Bootstrap Core CSS -->
     
@@ -39,6 +41,7 @@ prefix="c" %>
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+        <link type="text/css" href="${pageContext.request.contextPath}/css/stileCarrello.css" rel="stylesheet">
     
      
         
@@ -51,13 +54,17 @@ prefix="c" %>
 
 
 
+<script type="text/javascript">
 
-
+$(document).ready(function(){
+	
+	recalculateCart();
+});</script>
 </head>
 
 <body>
 
-<!-- Navigation -->
+  <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
            
@@ -78,9 +85,8 @@ prefix="c" %>
             <div class="collapse navbar-collapse" id="navbar">
             <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" required >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" required>
     				<input id="spazio-ricerca" type="hidden" name="tipo"  value="byNome" >
-    				
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>
@@ -131,134 +137,213 @@ prefix="c" %>
             </div><!-- /.navbar-collapse -->
             
         </div><!-- /.container -->
-     </nav>
-        
-      <div class="container">
-        
-		<div class="side-bar col-md-3" style="margin-block-start: 100px;position: relative;">
+    </nav>
+    
+    
+<!-- vistaCarrello -->
+<div class="shopping-cart">
 
-			<form method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
-			    				<input id="spazio-ricerca" type="hidden" name="tipo"  value="avanzata" >
-			
-   				<div class="input-group-btn">
-      					<button id="btn-ricerca" class="btn btn-default" type="submit">Ricerca avanzata
-        					<i class="glyphicon glyphicon-search"></i>
-      					</button>
-    			</div>
-    					
-				<div class="search-hotel">
-					<h3 class="agileits-sear-head">Codice</h3>
-						<div>
-							<input class="form-control" type="search" placeholder="Codice identificativo..." name="idProdotto" >
-						</div>				
-				</div>
-				
-				<div class="search-hotel">
-					<h3 class="agileits-sear-head">Nome commerciale</h3>
-						<div>
-							<input  class="form-control"  type="search" placeholder="Nome del prodotto" name="nomeCommerciale" >
-						</div>
-				</div>
-				
-				<div class="left-side">
-					<h3 class="agileits-sear-head">Categoria</h3>
-				
-					<select class="form-control" name="categoria">
-						<option>---</option>
-						<option value="Cereali_e_Derivati">Cereali e derivati</option>
-						<option value="Carne">Carne</option>
-						<option value="Pesce">Pesce</option>
-						<option value="LattieroCaserai">Latte e latticini</option>
-						<option value="Uova">Uova</option>
-						<option value="Ortaggi">Ortaggi</option>
-						<option value="Legumi">Legumi</option>
-						<option value="Frutta">Frutta</option>
-						<option value=OliiGrassiCondimento>Olii e grassi da condimento</option>
-						<option value="Bevande">Bevande</option>
-						<option value="Altro">Altro</option>
-					</select>
-				</div>
-				
-		
+<h1>Carrello della spesa</h1>
 
-				<!-- price range -->
-				<div class="range">
-					<h3 class="agileits-sear-head">Prezzo</h3>
-					<p>
-						<label for="prezzoMin">Da:</label>
-						<input class="form-control" type="text" name="prezzoMin" >
-						<label for="prezzoMax">A:</label>
-						<input  class="form-control" type="text" name="prezzoMax" >
-					</p>
-				</div>
-				
-			</form>
-				<!-- //price range -->
-			
-				</div>
 
-	<div class="agileinfo-ads-display col-md-9 w3l-rightpro">
-				<div class="wrapper">
-				<div class="product-sec1">
-		
-		    	<c:if test="${inizio == null}">
+  <div class="column-labels">
+    <label class="product-image">Image</label>
+    <label class="product-details">Product</label>
+    <label class="product-price">Price</label>
+    <label class="product-quantity">Quantity</label>
+    <label class="product-removal">Remove</label>
+    <label class="product-line-price">Total</label>
+  </div>
+
+
+<c:if test="${fn:length(vociCarrello)==0}">
 		    	
-		    		<h4></h4>
-		    		
-		    	</c:if>		    	
-		    	
-		    	<c:if test="${fn:length(prodotti) == 0 && inizio==false}">
-		    	
-		    		<h4>Nessun risultato trovato</h4>
-		    		
-		    	</c:if>
+		   <h4>Nessun articolo nel carrello </h4>
+</c:if>
 				
-			   	<c:if test="${prodotti != null && inizio==false}">
+<c:if test="${fn:length(vociCarrello)!=0}">
 				
-				<c:forEach items="${prodotti}" var="prod">
+				<c:forEach items="${vociCarrello}" var="item">
 				
+					 <div class="product">
+    					<div class="product-image">
+      						<img src="${pageContext.request.contextPath}/${item.immagine}">
+    					</div>
+    <div class="product-details">
+      <div class="product-title">${item.nomeCommerciale }</div>
+    </div>
+     <div class="product-id" style="display:none;" >${item.idProd}</div>
+    
+    <div class="product-price">${item.prezzo}</div>
+    <div class="product-quantity">
+      <input type="number" value="${item.quantita }" min="1" >
+    </div>
+    <div class="product-removal">
+      <button class="remove-product">
+        Rimuovi
+      </button>
+    </div>
+    <div class="product-line-price" style="display: block;">${item.prezzo*item.quantita }</div>
 				
-				
-				
-					<div class="col-sm-4">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="${pageContext.request.contextPath}/${prod.immagine}" alt="">
-
-								</div>
-								<div class="item-info-product ">
-									<h4>
-										<a href="single.html">${prod.nomeCommerciale}</a>
-									</h4>
-									<div class="info-product-price">
-										<span class="item_price">${prod.prezzo} €</span>
-									</div>
-									<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-										<form action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
-											<fieldset>
-												<input type="hidden" name="idProdotto" value="${prod.idProdotto}">
-												<input type="submit" name="submit" value="Dettagli" class="button">
-											</fieldset>
-										</form>
-									</div>
-
-								</div>
-							</div>
-						</div>
-	</c:forEach>
-			    	</c:if>
-	
 			
-					</div>
-					
+  </div>
+				
+				
+				
+				</c:forEach>
+</c:if>
+				<!--  
+ 
+  <div class="product">
+    <div class="product-image">
+      <img src="https://s.cdpn.io/3/large-NutroNaturalChoiceAdultLambMealandRiceDryDogFood.png">
+    </div>
+    <div class="product-details">
+      <div class="product-title">Nutro™ Adult Lamb and R</div>
+      <p class="product-description">Who doesn't like lamb and rice? We've all hit the halal cart at 3am while quasi-blackout after a night of binge drinking in Manhattan. Now it's your dog's turn!</p>
+    </div>
+    <div class="product-price">45.99</div>
+    <div class="product-quantity">
+      <input type="number" value="1" min="1">
+    </div>
+    <div class="product-removal">
+      <button class="remove-product">
+        Remove
+      </button>
+    </div>
+    <div class="product-line-price">45.99</div>
+  </div>
+-->
 
-				</div>
-			</div>
+  <div class="totals">
+    <div class="totals-item">
+      <label>Subtotale</label>
+      <div class="totals-value" id="cart-subtotal" style="display: block;">51.96</div>
+    </div>
+    <div class="totals-item">
+      <label>Tax (5%)</label>
+      <div class="totals-value" id="cart-tax" style="display: block;">2.60</div>
+    </div>
+    <div class="totals-item">
+      <label>Shipping</label>
+      <div class="totals-value" id="cart-shipping" style="display: block;">15.00</div>
+    </div>
+    <div class="totals-item totals-item-total">
+      <label>Totale</label>
+      <div class="totals-value" id="cart-total" style="display: block;">69.56</div>
+    </div>
+  </div>
+     <form action="">
+     <input type="hidden" name="idAccountProprietario" value="${idAccount}">
+								<input type="hidden" name="idProd" value="${prodotto.idProdotto}">
+								<input type="hidden" name="immagine" value="${prodotto.immagine}">
+								<input type="hidden" name="nomeCommerciale" value="${prodotto.nomeCommerciale}">
+								<input type="hidden" name="totale" value="${prodotto.prezzo}">
+								<input class="checkout" type="submit" name="submit" value="Procedi all'ordine" class="button">
+    					 
+	</form>
+
+</div>
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>/* Set rates + misc */
+var taxRate = 0.05;
+var shippingRate = 15.00;
+var fadeTime = 300;
+
+
+/* Assign actions */
+
+
+$('.product-quantity input').change(function () {
+  updateQuantity(this);
+});
+
+$('.product-removal button').click(function () {
+  removeItem(this);
+});
+
+
+/* Recalculate cart */
+function recalculateCart()
+{
+  var subtotal = 0;
+
+  /* Sum up row totals */
+  $('.product').each(function () {
+    subtotal += parseFloat($(this).children('.product-line-price').text());
+  });
+
+  /* Calculate totals */
+  var tax = subtotal * taxRate;
+  var shipping = subtotal > 0 ? shippingRate : 0;
+  var total = subtotal + tax + shipping;
+
+  /* Update totals display */
+  $('.totals-value').fadeOut(fadeTime, function () {
+    $('#cart-subtotal').html(subtotal.toFixed(2));
+    $('#cart-tax').html(tax.toFixed(2));
+    $('#cart-shipping').html(shipping.toFixed(2));
+    $('#cart-total').html(total.toFixed(2));
+    if (total == 0) {
+      $('.checkout').fadeOut(fadeTime);
+    } else {
+      $('.checkout').fadeIn(fadeTime);
+    }
+    $('.totals-value').fadeIn(fadeTime);
+  });
+}
+
+
+/* Update quantity */
+function updateQuantity(quantityInput)
+{
+  /* Calculate line price */
+  var productRow = $(quantityInput).parent().parent();
+  var price = parseFloat(productRow.children('.product-price').text());
+  var quantity = $(quantityInput).val();
+  var linePrice = price * quantity;
+  var idProd=productRow.children('.product-id').text();
+
+  $.ajax({ type: "POST",
+		 url: "../aggiornaCarrello",
+		 data: {quantita : quantity, idProdotto : idProd},
+		 success: function(data){ 
+			  var d=JSON.parse(data);
+
+			 		if(d.stato==true){
+						alert("Carrello aggiornato");
+			 			return true;
+			 		}		 		
+			 	},
 	
-		</div>        
-	
-	
-	<!-- Footer -->
+	});
+  /* Update line price display and recalc cart totals */
+  productRow.children('.product-line-price').each(function () {
+    $(this).fadeOut(fadeTime, function () {
+      $(this).text(linePrice.toFixed(2));
+      recalculateCart();
+      $(this).fadeIn(fadeTime);
+    });
+  });
+}
+
+
+/* Remove item from cart */
+function removeItem(removeButton)
+{
+  /* Remove row from DOM and recalc cart total */
+  var productRow = $(removeButton).parent().parent();
+  productRow.slideUp(fadeTime, function () {
+    productRow.remove();
+    recalculateCart();
+  });
+}
+//# sourceURL=pen.js
+</script>
+
+
+
+<!-- Footer -->
 	<footer>
 	
 		<h1 class="text-center">Find Us</h1>
@@ -325,5 +410,7 @@ prefix="c" %>
         </div>
         
 	</footer>
+	
+	
 </body>
 </html>
