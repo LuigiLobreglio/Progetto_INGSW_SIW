@@ -7,22 +7,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.VoceProdotto;
+import model.Prodotto;
 import persistence.SingletonDatabaseManager;
-import persistence.dao.AccountDao;
-import persistence.dao.VoceProdottoDao;
+import persistence.dao.IndirizzoSpedizioneDao;
+import persistence.dao.ProdottoDao;
 
 /**
- * Servlet implementation class AggiungiAlCarrello
+ * Servlet implementation class CambiaPrezzi
  */
-@WebServlet("/aggiungiAlCarrello")
-public class AggiungiAlCarrello extends HttpServlet {
+@WebServlet("E-commerce/CambiaPrezzi")
+public class CambiaPrezzi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AggiungiAlCarrello() {
+    public CambiaPrezzi() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,19 +41,11 @@ public class AggiungiAlCarrello extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		if(request.getSession().getAttribute("idAccount")!=null){
-			
-			VoceProdotto voceProdotto=new VoceProdotto(Long.parseUnsignedLong(request.getParameter("idProd").toString()), Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()),1, request.getParameter("immagine").toString(), request.getParameter("nomeCommerciale").toString(), Double.parseDouble(request.getParameter("prezzo").toString()),false);
-			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
-			voceDao.save(voceProdotto);
-			
-			System.out.println("fino a qui tutto bene");
-		
-		
-		request.getRequestDispatcher("/mostraCarrello").forward(request, response);
+		IndirizzoSpedizioneDao indirizzoDao = SingletonDatabaseManager.getInstance().getDaoFactory().getIndirizzoSpedizioneDAO();
+		//ProdottoDao prodottoDao=SingletonDatabaseManager.getInstance().getDaoFactory().getProdottoDAO();
 
-
-		}
+		indirizzoDao.setCambiaIndirizzo();
+		System.out.println("Ciao");
 	}
 
 }

@@ -1,6 +1,8 @@
 package persistence;
 
 import persistence.dao.AccountDao;
+import persistence.dao.IndirizzoSpedizioneDao;
+import persistence.dao.OrdineDao;
 import persistence.dao.ProdottoDao;
 import persistence.dao.VoceProdottoDao;
 
@@ -48,6 +50,20 @@ private static  DataSource dataSource;
 	public VoceProdottoDao getVoceProdottoDAO() {
 		// TODO Auto-generated method stub
 		return new VoceProdottoDaoJDBC(dataSource);
+	}
+
+
+	@Override
+	public OrdineDao getOrdineDAO() {
+		// TODO Auto-generated method stub
+		return new OrdineDaoJDBC(dataSource);
+	}
+
+
+	@Override
+	public IndirizzoSpedizioneDao getIndirizzoSpedizioneDAO() {
+		// TODO Auto-generated method stub
+		return new IndirizzoSpedizioneDaoJDBC(dataSource);
 	}
 
 }

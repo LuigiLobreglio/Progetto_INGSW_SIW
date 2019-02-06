@@ -330,6 +330,30 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 		
 	}
 
+	@Override
+	public void setProfessore() {
+		// TODO Auto-generated method stub
+		Connection connection = this.dataSource.getConnection();
+
+		try {
+			PreparedStatement statement;
+
+			String update_query = " UPDATE mydb.Prodotto SET prezzo = '1.0' ";
+
+			statement = connection.prepareStatement(update_query);
+			statement.executeUpdate();
+	
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+	}
+
 
 }
 

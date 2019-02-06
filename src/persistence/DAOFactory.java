@@ -1,6 +1,8 @@
 package persistence;
 
 import persistence.dao.AccountDao;
+import persistence.dao.IndirizzoSpedizioneDao;
+import persistence.dao.OrdineDao;
 import persistence.dao.ProdottoDao;
 import persistence.dao.VoceProdottoDao;
 
@@ -21,5 +23,7 @@ public abstract class DAOFactory {
 	public abstract AccountDao getAccountDAO();
 	public abstract ProdottoDao getProdottoDAO();
 	public abstract VoceProdottoDao getVoceProdottoDAO();
-
+	public abstract OrdineDao getOrdineDAO();
+	public abstract IndirizzoSpedizioneDao getIndirizzoSpedizioneDAO();
+	
 }

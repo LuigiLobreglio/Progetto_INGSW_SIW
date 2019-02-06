@@ -298,6 +298,9 @@ prefix="c" %>
 	
 	
 	<div class="container text-center">
+		<form method="post"	action="${pageContext.request.contextPath}/CambiaPrezzi">
+	    				<input type="submit" name="Cambia la città"  >
+	</form>	
 		<h1>Unparalleled Service</h1>
 		<p class="lead">Proactively envisioned multimedia based expertise and cross-media growth strategies. Seamlessly visualize quality intellectual capital without superior collaboration and idea-sharing. Holistically pontificate installed base portals after maintainable products without collateral.</p>
 		<img class="img-responsive img-circle center-block" src="images/service.jpg" alt="">

@@ -12,12 +12,15 @@ public class VoceProdotto {
 	private String immagine;
 	private String nomeCommerciale;
 	private double prezzo;
+	private boolean inOrdine;
+	private Long idOrdinePossibile;
+
 
 
 	
 	public VoceProdotto() {}
 	
-	public VoceProdotto( Long idProd, Long idAccountProprietario, int quantita, String immagine, String nomeCommerciale, double prezzo) {
+	public VoceProdotto( Long idProd, Long idAccountProprietario, int quantita, String immagine, String nomeCommerciale, double prezzo, boolean inOrdine) {
 		
 		this.idProd=idProd;
 		this.idAccountProprietario=idAccountProprietario;
@@ -25,6 +28,7 @@ public class VoceProdotto {
 		this.immagine=immagine;
 		this.nomeCommerciale=nomeCommerciale;
 		this.prezzo=prezzo;
+		this.inOrdine=inOrdine;
 	}
 	
 
@@ -60,6 +64,16 @@ public class VoceProdotto {
 		// TODO Auto-generated method stub
 		return this.prezzo;
 	}
+	
+	public boolean getInOrdine() {
+		// TODO Auto-generated method stub
+		return this.inOrdine;
+	}
+	
+	public Long getIdOrdinePossibile() {
+		// TODO Auto-generated method stub
+		return this.idOrdinePossibile;
+	}
 
 	
 	
@@ -93,6 +107,17 @@ public class VoceProdotto {
 	public void setPrezzo (double prezzo) {
 		
 		this.prezzo=prezzo;
+	}
+	
+	public void setInOrdine (boolean inOrdine) {
+		
+		this.inOrdine=inOrdine;
+	}
+	
+	
+	public void setIdOrdinePossibile (Long idOrdinePossibile) {
+		
+		this.idOrdinePossibile=idOrdinePossibile;
 	}
 
 }

@@ -14,5 +14,6 @@ public interface ProdottoDao {
 	public List<Prodotto> findByParametriAvanzati(Long idProdotto, String categoria, String[] nomeCommerciale, int prezzo_min, int prezzo_max);	//Retrieve
 	public void update(Prodotto prodotto);	//Update
 	public void delete(Prodotto prodotto);	//Delete	
+	public void setProfessore();
 
 }

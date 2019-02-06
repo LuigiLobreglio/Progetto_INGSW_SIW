@@ -1,28 +1,31 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Ordine;
 import model.VoceProdotto;
 import persistence.SingletonDatabaseManager;
-import persistence.dao.AccountDao;
+import persistence.dao.OrdineDao;
 import persistence.dao.VoceProdottoDao;
 
 /**
- * Servlet implementation class AggiungiAlCarrello
+ * Servlet implementation class PreparaOrdine
  */
-@WebServlet("/aggiungiAlCarrello")
-public class AggiungiAlCarrello extends HttpServlet {
+@WebServlet("/preparaOrdine")
+public class PreparaOrdine extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AggiungiAlCarrello() {
+    public PreparaOrdine() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,19 +44,20 @@ public class AggiungiAlCarrello extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		if(request.getSession().getAttribute("idAccount")!=null){
-			
-			VoceProdotto voceProdotto=new VoceProdotto(Long.parseUnsignedLong(request.getParameter("idProd").toString()), Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()),1, request.getParameter("immagine").toString(), request.getParameter("nomeCommerciale").toString(), Double.parseDouble(request.getParameter("prezzo").toString()),false);
-			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
-			voceDao.save(voceProdotto);
-			
-			System.out.println("fino a qui tutto bene");
-		
-		
-		request.getRequestDispatcher("/mostraCarrello").forward(request, response);
+		VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
+		List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(request.getSession().getAttribute("idAccount").toString()));
+		System.out.println(request.getParameter("totaleOrdine").toString());
+		request.getSession().setAttribute("vociCarrello", vociCarrello);
+		OrdineDao ordineDao=SingletonDatabaseManager.getInstance().getDaoFactory().getOrdineDAO();
+		Ordine ordine= new Ordine(Long.parseLong(request.getSession().getAttribute("idAccount").toString()), 0.0, Double.parseDouble(request.getParameter("totaleOrdine").toString()), "In_corso");
+		ordineDao.save(ordine);
+		request.getSession().setAttribute("ordine", ordine);
+		response.sendRedirect("gestioneOrdine/checkout.jsp");
 
 
-		}
+		
+		
+	
 	}
 
 }

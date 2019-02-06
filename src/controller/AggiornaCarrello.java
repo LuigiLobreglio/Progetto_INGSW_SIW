@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import model.VoceProdotto;
 import persistence.SingletonDatabaseManager;
 import persistence.dao.VoceProdottoDao;
 
@@ -43,20 +45,16 @@ public class AggiornaCarrello extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("prima del Dao");
-
+		if(request.getParameter("tipoAggiornamento").toString().equals("update")) {
 		VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
-		System.out.println("dopo la ricerca");
-		Long.parseLong(request.getParameter("idProdotto"));
-
 		voceDao.update(Long.parseLong(request.getSession().getAttribute("idAccount").toString()), Long.parseLong(request.getParameter("idProdotto").toString()), Integer.parseInt(request.getParameter("quantita").toString()));
-		System.out.println("dopo attribuzione");
-
+		List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(request.getSession().getAttribute("idAccount").toString()));
+		request.getSession().setAttribute("vociCarrello", vociCarrello);
 		JSONObject controlloAggiornamento = new JSONObject();
 		try {
 			controlloAggiornamento.put("stato", new Boolean(true));				   
 			String json = controlloAggiornamento.toString();
-			System.out.println("Disponibile");
+			System.out.println("QUantità");
 			PrintWriter out=response.getWriter();
 			out.write(json);
 			out.close();
@@ -65,5 +63,31 @@ public class AggiornaCarrello extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+		
+		else if(request.getParameter("tipoAggiornamento").toString().equals("delete")) {
+			
+			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
+			voceDao.delete(Long.parseLong(request.getSession().getAttribute("idAccount").toString()), Long.parseLong(request.getParameter("idProdotto").toString()));
+			List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(request.getSession().getAttribute("idAccount").toString()));
+			request.getSession().setAttribute("vociCarrello", vociCarrello);
+			JSONObject controlloAggiornamento = new JSONObject();
+			try {
+				controlloAggiornamento.put("stato", new Boolean(true));				   
+				String json = controlloAggiornamento.toString();
+				System.out.println("Eliminare");
+				PrintWriter out=response.getWriter();
+				out.write(json);
+				out.close();
+				} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	
+		
+		
+	}
+
 
 }

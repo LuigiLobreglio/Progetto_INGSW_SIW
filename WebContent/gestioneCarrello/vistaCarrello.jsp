@@ -180,6 +180,8 @@ $(document).ready(function(){
     </div>
     <div class="product-removal">
       <button class="remove-product">
+           <div class="product-id" style="display:none;" >${item.idProd}</div>
+      
         Rimuovi
       </button>
     </div>
@@ -222,25 +224,21 @@ $(document).ready(function(){
     </div>
     <div class="totals-item">
       <label>Tax (5%)</label>
-      <div class="totals-value" id="cart-tax" style="display: block;">2.60</div>
+      <div class="totals-value" id="cart-tax" style="display: block;">0.0</div>
     </div>
     <div class="totals-item">
       <label>Shipping</label>
-      <div class="totals-value" id="cart-shipping" style="display: block;">15.00</div>
+      <div class="totals-value" id="cart-shipping" style="display: block;">0.00</div>
     </div>
     <div class="totals-item totals-item-total">
       <label>Totale</label>
       <div class="totals-value" id="cart-total" style="display: block;">69.56</div>
     </div>
   </div>
-     <form action="">
-     <input type="hidden" name="idAccountProprietario" value="${idAccount}">
-								<input type="hidden" name="idProd" value="${prodotto.idProdotto}">
-								<input type="hidden" name="immagine" value="${prodotto.immagine}">
-								<input type="hidden" name="nomeCommerciale" value="${prodotto.nomeCommerciale}">
-								<input type="hidden" name="totale" value="${prodotto.prezzo}">
-								<input class="checkout" type="submit" name="submit" value="Procedi all'ordine" class="button">
-    					 
+  
+     <form method="post" action="../preparaOrdine">
+		<div id="totale"></div>
+		<input class="checkout" type="submit" value="Procedi all'ordine" class="button">   					 
 	</form>
 
 </div>
@@ -277,13 +275,14 @@ function recalculateCart()
   var tax = subtotal * taxRate;
   var shipping = subtotal > 0 ? shippingRate : 0;
   var total = subtotal + tax + shipping;
-
+  $('#totale').html('<input type=\"hidden\" id=\"totale\" name=\"totaleOrdine\" value='+total+' >');
   /* Update totals display */
   $('.totals-value').fadeOut(fadeTime, function () {
     $('#cart-subtotal').html(subtotal.toFixed(2));
     $('#cart-tax').html(tax.toFixed(2));
     $('#cart-shipping').html(shipping.toFixed(2));
     $('#cart-total').html(total.toFixed(2));
+
     if (total == 0) {
       $('.checkout').fadeOut(fadeTime);
     } else {
@@ -303,10 +302,11 @@ function updateQuantity(quantityInput)
   var quantity = $(quantityInput).val();
   var linePrice = price * quantity;
   var idProd=productRow.children('.product-id').text();
-
+  var tipo="update";
+  alert(tipo);
   $.ajax({ type: "POST",
 		 url: "../aggiornaCarrello",
-		 data: {quantita : quantity, idProdotto : idProd},
+		 data: {quantita : quantity, idProdotto : idProd, tipoAggiornamento: tipo},
 		 success: function(data){ 
 			  var d=JSON.parse(data);
 
@@ -331,6 +331,24 @@ function updateQuantity(quantityInput)
 /* Remove item from cart */
 function removeItem(removeButton)
 {
+
+	  var idProd=$(removeButton).children('.product-id').text();
+
+	  var tipo="delete";
+	  alert(idProd);
+	  $.ajax({ type: "POST",
+			 url: "../aggiornaCarrello",
+			 data: {idProdotto : idProd, tipoAggiornamento: tipo},
+			 success: function(data){ 
+				  var d=JSON.parse(data);
+
+				 		if(d.stato==true){
+							alert("Carrello aggiornato");
+				 			return true;
+				 		}		 		
+				 	},
+		
+		});
   /* Remove row from DOM and recalc cart total */
   var productRow = $(removeButton).parent().parent();
   productRow.slideUp(fadeTime, function () {

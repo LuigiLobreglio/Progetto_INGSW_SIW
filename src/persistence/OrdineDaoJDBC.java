@@ -7,35 +7,30 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.Prodotto;
+import model.Ordine;
 import model.VoceProdotto;
-import persistence.dao.VoceProdottoDao;
+import persistence.dao.OrdineDao;
 
-public class VoceProdottoDaoJDBC implements VoceProdottoDao {
+public class OrdineDaoJDBC  implements OrdineDao{
+
 	
 	private DataSource dataSource;
 
-	public VoceProdottoDaoJDBC(DataSource dataSource) {
+	public OrdineDaoJDBC(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
+	
 	@Override
-	public void save(VoceProdotto voceProdotto) {
+	public void save(Ordine ordine) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into VoceProdotto( quantita, idProd, idAccountProprietario, immagine, nomeCommerciale, prezzo, inOrdine) values (?,?,?,?,?,?,?)";
+			String insert = "insert into Ordine( idAccountProprietario, totaleOrdine, statoOrdine) values (?,?,?)";
 			
 			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1, voceProdotto.getQuantita());		
-			statement.setLong(2, voceProdotto.getIdProd());
-			statement.setLong(3, voceProdotto.getIdAccountProprietario());
-			statement.setString(4, voceProdotto.getImmagine());
-			statement.setString(5, voceProdotto.getNomeCommerciale());
-			statement.setDouble(6, voceProdotto.getPrezzo());
-			statement.setBoolean(7, voceProdotto.getInOrdine());
-
-
+			statement.setLong(1, ordine.getIdAccountProprietario());		
+			statement.setDouble(2, ordine.getTotaleOrdine());
+			statement.setString(3, ordine.getStatoOrdine());
 				
 			statement.executeUpdate();
 			
@@ -51,32 +46,32 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 	}
 
 	@Override
-	public List<VoceProdotto> findAll() {
+	public List<Ordine> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<VoceProdotto> findByIdAccountProprietario(Long idAccountProprietario) {
+	public List<Ordine> findByIdAccountProprietario(Long idAccountProprietario) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
-		List<VoceProdotto> vociProdotto= new LinkedList<>();
+		List<Ordine> ordini= new LinkedList<>();
 		try {
-			VoceProdotto voceProdotto;
+			Ordine ordine;
 			PreparedStatement statement;
-			String query = "select * from voceProdotto where idAccountProprietario='"+idAccountProprietario+"' AND inOrdine=false";
+			String query = "select * from Ordine where idAccountProprietario='"+idAccountProprietario+"'";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				voceProdotto = new VoceProdotto();
-				voceProdotto.setQuantita(result.getInt("quantita"));
-				voceProdotto.setIdProd(result.getLong("idProd"));
-				voceProdotto.setIdAccountProprietario(result.getLong("idAccountProprietario"));	
-				voceProdotto.setImmagine(result.getString("immagine"));	
-				voceProdotto.setNomeCommerciale(result.getString("nomeCommerciale"));	
-				voceProdotto.setPrezzo(result.getDouble("prezzo"));	
+				ordine = new Ordine();
+				ordine.setCodice(result.getLong("idOrdine"));
+				ordine.setIdAccountProprietario(result.getLong("idAccountProprietario"));	
+				ordine.setSpesaSpedizione(result.getDouble("spesaSpedizione"));	
+				ordine.setTotaleOrdine(result.getDouble("totaleOrdine"));	
+				ordine.setStatoOrdine(result.getString("statoOrdine"));	
+				ordine.setDataEffettuazione(result.getDate("dataEffettuazione").toString());
 			
-				vociProdotto.add(voceProdotto);
+				ordini.add(ordine);
 			}
 		} catch (SQLException e) {
 			throw new PersistenceException(e.getMessage());
@@ -88,18 +83,19 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 			}
 		}
 		
-		return vociProdotto;
+		return ordini;
+	
 	}
 
 	@Override
-	public void update(Long idAccountProprietario, Long idProd, int quantita) {
+	public void updateStatoOrdine(Long idAccountProprietario, Long idOrdine, String statoOrdine) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 
 		try {
 			PreparedStatement statement;
 
-			String update_query = " UPDATE mydb.voceProdotto SET quantita = '"+quantita+"'  WHERE (idProd = '"+idProd+"') AND (idAccountProprietario= '"+idAccountProprietario+"')";
+			String update_query = " UPDATE mydb.ordine SET statoOrdine = '"+statoOrdine+"'  WHERE (idAccountProprietario = '"+idAccountProprietario+"') AND (idOrdine= '"+idOrdine+"')";
 
 			statement = connection.prepareStatement(update_query);
 			statement.executeUpdate();
@@ -112,44 +108,19 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 			} catch (SQLException e) {
 				throw new PersistenceException(e.getMessage());
 			}
-		}
-				
+		
 	}
+}
 
 	@Override
-	public void delete(Long idAccountProprietario, Long idProd) {
+	public void updateSpesaSpedizione(Long idAccountProprietario, Long idOrdine, double spesaSpedizione) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 
 		try {
 			PreparedStatement statement;
 
-			String delete_query = " DELETE FROM mydb.voceProdotto  WHERE (idProd = '"+idProd+"') AND (idAccountProprietario= '"+idAccountProprietario+"')";
-
-			statement = connection.prepareStatement(delete_query);
-			statement.executeUpdate();
-	
-		} catch (SQLException e) {
-			throw new PersistenceException(e.getMessage());
-		}	 finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				throw new PersistenceException(e.getMessage());
-			}
-		}
-	}
-	
-	
-	@Override
-	public void updateInOrdine(Long idAccountProprietario, boolean inOrdine, Long idOrdinePossibile) {
-		// TODO Auto-generated method stub
-		Connection connection = this.dataSource.getConnection();
-
-		try {
-			PreparedStatement statement;
-
-			String update_query = " UPDATE mydb.voceProdotto SET InOrdine ="+inOrdine+" ,idOrdinePossibile='"+idOrdinePossibile+"'   WHERE (idAccountProprietario= '"+idAccountProprietario+"') AND (inOrdine=false)";
+			String update_query = " UPDATE mydb.ordine SET spesaSpedizione = '"+spesaSpedizione+"'  WHERE (idAccountProprietario = '"+idAccountProprietario+"') AND (idOrdine= '"+idOrdine+"')";
 
 			statement = connection.prepareStatement(update_query);
 			statement.executeUpdate();
@@ -162,8 +133,35 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 			} catch (SQLException e) {
 				throw new PersistenceException(e.getMessage());
 			}
-		}
-				
+		
+	}		
+	}
+
+
+
+	@Override
+	public void updateIndirizzoConsegna(Long idAccountProprietario, Long idOrdine, String idIndirizzoConsegna) {
+		// TODO Auto-generated method stub
+		Connection connection = this.dataSource.getConnection();
+
+		try {
+			PreparedStatement statement;
+
+			String update_query = " UPDATE mydb.ordine SET idIndirizzoConsegna = '"+idIndirizzoConsegna+"'  WHERE (idAccountProprietario = '"+idAccountProprietario+"') AND (idOrdine= '"+idOrdine+"')";
+
+			statement = connection.prepareStatement(update_query);
+			statement.executeUpdate();
+	
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		
+	}				
 	}
 
 }
