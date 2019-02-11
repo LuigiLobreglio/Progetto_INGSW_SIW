@@ -47,8 +47,6 @@ prefix="c" %>
 	.mySlides {display:none;}
 	</style>
 
-
-
 </head>
 
 <body>
@@ -103,7 +101,7 @@ prefix="c" %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servizi <span class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Cerca prodotti</a></li>
+							<li><a href="${pageContext.request.contextPath}/RicercaProdotto">Cerca prodotti</a></li>
 							<li><a href="#">Pianifica la tua dieta!</a></li>
 						</ul>
 					</li>
@@ -177,7 +175,7 @@ prefix="c" %>
 				</div>
             </a>
             
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/RicercaProdotto">
            		 <div class="col-md-4 promo-item item-2" >
 					<h3>
 						Cerca prodotti!
@@ -298,9 +296,7 @@ prefix="c" %>
 	
 	
 	<div class="container text-center">
-		<form method="post"	action="${pageContext.request.contextPath}/CambiaPrezzi">
-	    				<input type="submit" name="Cambia la città"  >
-	</form>	
+
 		<h1>Unparalleled Service</h1>
 		<p class="lead">Proactively envisioned multimedia based expertise and cross-media growth strategies. Seamlessly visualize quality intellectual capital without superior collaboration and idea-sharing. Holistically pontificate installed base portals after maintainable products without collateral.</p>
 		<img class="img-responsive img-circle center-block" src="images/service.jpg" alt="">

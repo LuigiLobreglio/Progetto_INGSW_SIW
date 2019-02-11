@@ -6,21 +6,14 @@ function ricercaLive() {
 	var stringaRicerca = $('#spazio-ricerca').val();
 	$("div.container_suggerimenti").css("display", "none");
 	$("#lista-suggerimenti").empty();
+	
+
 
 if(stringaRicerca.length>=2){
-var context;
-
-	if(location.pathname!="/E-commerce/index.jsp")
-		
-		context='../RicercaProdotto';
-	else
-		
-		context="RicercaProdotto";
-	
 
 	$.ajax({ type: "POST",
 		
-       		 url: context,
+       		 url: "/E-commerce/RicercaProdotto",
        		 data: {liveKey : stringaRicerca, tipo : "live"},
        		 datatype:"json",
        		 success: function(data){ 
@@ -35,7 +28,7 @@ var context;
 
        			        var list = "";
        			        for(i=0; i<results.length; i++){
-       			        list +="<li id=\"eddai\"> <a id=\"suggerimento\" onclick=myFunction() >"+results[i]+" </a> </li>";
+       			        list +="<li > <a id=\"suggerimento\" onclick=myFunction($(this).text()) >"+results[i]+" </a> </li>";
        			        }
 
            			    $("#lista-suggerimenti").append(list);
@@ -52,10 +45,9 @@ var context;
 
 
 
-function myFunction() {
-		   var t=$("#suggerimento").text();
+function myFunction(t) {
 
-		    $("#spazio-ricerca").val( t );
+		    $("#spazio-ricerca").val(t);
 
 
 }

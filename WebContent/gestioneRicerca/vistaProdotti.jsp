@@ -70,7 +70,7 @@ prefix="c" %>
                     <span class="icon-bar"></span>
                 </button>
                 <div class="navbar-brand" >
-                	<span class="glyphicon glyphicon-cutlery" ></span> <a class="titolo-logo" href="#"> BYMP</a>  <span class="glyphicon glyphicon-calendar"></span> 	
+                	<span class="glyphicon glyphicon-cutlery" ></span> <a class="titolo-logo" href="../index.jsp"> BYMP</a>  <span class="glyphicon glyphicon-calendar"></span> 	
                 </div>
             </div>
             
@@ -100,7 +100,7 @@ prefix="c" %>
             
                 <ul class="nav navbar-nav navbar-center">
                     <li class="active">
-                        <a href="#">Pagina iniziale</a>
+                        <a href="../index.jsp">Pagina iniziale</a>
                     </li>
                     <li>
                         <a href="#">Prodotti</a>
@@ -108,7 +108,7 @@ prefix="c" %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servizi <span class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Cerca prodotti</a></li>
+							<li><a  method="post" href="${pageContext.request.contextPath}/RicercaProdotto">Cerca prodotti</a></li>
 							<li><a href="#">Pianifica la tua dieta!</a></li>
 						</ul>
 					</li>
@@ -218,8 +218,37 @@ prefix="c" %>
 				<c:forEach items="${prodotti}" var="prod">
 				
 				
-				
-				
+				<div class=" col-sm-6 col-xs-4 ">
+					<div class="thumbnail featured-product">
+						<a href="#">
+							<img src="${pageContext.request.contextPath}/${prod.immagine}" alt="">
+						</a>
+						<div class="caption">
+							<h3> 
+								<a href="single.html">${prod.nomeCommerciale}</a>
+							</h3>
+							<p class="price">${prod.prezzo} €</p>
+
+						<!-- Input Group -->
+						<div class="input-group">
+										<form action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
+											<fieldset>
+												<input type="hidden" name="idProdotto" value="${prod.idProdotto}">
+												<input type="submit" name="submit" value="Dettagli" class="button">
+											</fieldset>
+										</form> <!-- 
+							<input type="number" class="form-control" value="1">
+							<span class="input-group-btn">
+								<button class="btn btn-primary" type="button">
+									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
+									Add to Cart
+								</button>
+							</span> -->
+						</div>
+					</div>
+				</div>
+			</div>
+				<!--  
 					<div class="col-sm-4">
 							<div class="men-pro-item simpleCart_shelfItem">
 								<div class="men-thumb-item">
@@ -244,7 +273,7 @@ prefix="c" %>
 
 								</div>
 							</div>
-						</div>
+						</div> -->
 	</c:forEach>
 			    	</c:if>
 	

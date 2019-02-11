@@ -54,7 +54,7 @@ prefix="c" %>
                     <span class="icon-bar"></span>
                 </button>
                 <div class="navbar-brand" >
-                	<span class="glyphicon glyphicon-cutlery" ></span> <a class="titolo-logo" href="#"> BYMP</a>  <span class="glyphicon glyphicon-calendar"></span> 	
+                	<span class="glyphicon glyphicon-cutlery" ></span> <a class="titolo-logo" href="../index.jsp"> BYMP</a>  <span class="glyphicon glyphicon-calendar"></span> 	
                 </div>
             </div>
             
@@ -81,7 +81,7 @@ prefix="c" %>
 			
                 <ul class="nav navbar-nav navbar-center">
                     <li class="active">
-                        <a href="#">Pagina iniziale</a>
+                        <a href="../index.jsp">Pagina iniziale</a>
                     </li>
                     <li>
                         <a href="#">Prodotti</a>

@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
@@ -44,8 +42,8 @@ public class RicercaProdotto extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		
-		System.out.println(request.getParameter("tipo").toString());
-		if(request.getParameter("tipo").toString().equals("byNome") ) {
+
+		if(String.valueOf(request.getParameter("tipo")).equals("byNome") ) {
 
 			String[] nomeCommerciale=request.getParameter("nomeCommerciale").toString().split("\\s+");
 			for(int i=0; i<nomeCommerciale.length;i++) {
@@ -64,7 +62,7 @@ public class RicercaProdotto extends HttpServlet {
 			
 		}
 		
-		else if(request.getParameter("tipo").toString().equals("avanzata") ) {
+		else if(String.valueOf(request.getParameter("tipo")).equals("avanzata") ) {
 
 			Long idProdotto;
 			String categoria;
@@ -134,6 +132,13 @@ public class RicercaProdotto extends HttpServlet {
 			
 		}
 		
+		else {
+			
+			request.getSession().setAttribute("inizio", null);
+			response.sendRedirect(request.getContextPath()+"/gestioneRicerca/vistaProdotti.jsp");
+
+		}
+		
 
 	}
 
@@ -151,7 +156,6 @@ public class RicercaProdotto extends HttpServlet {
 			System.out.println("Sono nell'if");
 
 			ProdottoDao prodottoDao=SingletonDatabaseManager.getInstance().getDaoFactory().getProdottoDAO();
-			String[] liveKeys=request.getParameter("liveKey").toString().split("\\s+");
 			System.out.println(request.getParameter("liveKey").replaceFirst("\\s++$", ""));
 			System.out.println(request.getParameter("liveKey").replaceFirst("\\s++$", "").replaceAll("'", "\\\\'"));
 
