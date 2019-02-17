@@ -29,13 +29,29 @@ public class AccountDaoJDBC implements AccountDao {
 	public void save(Account account) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into Account( nome, cognome, data_nascita, sesso, indirizzo_email, password) values (?,?,?,?,?,?)";
+			String insert = "insert into Account( nome, cognome, data_nascita, sesso, indirizzo_email, password, idFacebook) values (?,?,?,?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
 			statement.setString(1, account.getNome());
 			statement.setString(2, account.getCognome());
-			Date d= Date.valueOf(account.getData_nascita());
-			statement.setDate(3, d);		
-			statement.setString(4, account.getSesso());
+			try{
+				
+				Date d= Date.valueOf(account.getData_nascita());
+				statement.setDate(3, d);		
+
+				
+			}catch (IllegalArgumentException e) {
+				statement.setDate(3, null);		
+			}
+			
+			try{
+			
+				statement.setString(4, account.getSesso());
+
+				
+			}catch (NullPointerException e) {
+				statement.setString(4, null);
+			}
+
 			statement.setString(5, account.getIndirizzoEmail());
 			
 			//Creating the MessageDigest object  
@@ -62,7 +78,8 @@ public class AccountDaoJDBC implements AccountDao {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				}
-				
+			statement.setLong(7, account.getidFacebook());
+
 			statement.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -99,7 +116,7 @@ public class AccountDaoJDBC implements AccountDao {
 				account = new Account();
 				account.setNome(result.getString("nome"));				
 				account.setCognome(result.getString("cognome"));
-				account.setData_nascita(result.getDate("data_nascita").toString() );	
+				account.setData_nascita(String.valueOf(result.getDate("data_nascita")) );	
 				account.setSesso(result.getString("sesso"));
 				account.setIndirizzo_email(result.getString("indirizzo_email"));
 				account.setPassword(result.getString("password"));
@@ -116,7 +133,6 @@ public class AccountDaoJDBC implements AccountDao {
 			}
 		}
 		
-		System.out.println(accounts.size());
 		return accounts;
 	}
 	
@@ -174,6 +190,31 @@ public class AccountDaoJDBC implements AccountDao {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean findByIdFacebook(Long idFacebook) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Connection connection = this.dataSource.getConnection();
+		try {
+			PreparedStatement statement;
+			String query = "select exists(select * from mydb.account where idFacebook='"+idFacebook+"') ";
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			
+			return result.getBoolean("exists");
+
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+		
+		}
 
 
 }

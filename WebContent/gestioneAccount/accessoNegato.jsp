@@ -129,6 +129,12 @@ prefix="c" %>
 					
 <c:if test="${errore == 'email_errata' }">
 	<span style="color:red;" class="glyphicon glyphicon-alert">Accesso negato, nessun cliente associato all'indirizzo email precedentemente inserito!</span>
+</c:if>	
+
+<c:if test="${errore == 'account_facebook' }">
+	<span style="color:red;" class="glyphicon glyphicon-alert">
+		Sembra che tu voglia accedere tramite un account Facebook, utilizza il pulsante dedicato per autenticarti correttamente.
+	</span>
 </c:if>	   
 
 

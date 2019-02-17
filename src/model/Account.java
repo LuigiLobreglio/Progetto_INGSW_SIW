@@ -14,19 +14,11 @@ public class Account {
 	private Sesso sesso;
 	private String indirizzo_Email;
 	private String password;
+	private Long idFacebook;
 	
 	public Account() {}
 	
-public Account(String nome, String cognome, String data_nascita, String sesso, String indirizzo_Email, String password) {
-	this.nome=nome;
-	this.cognome=cognome;
-	this.data_nascita=data_nascita;
-	this.sesso= Sesso.valueOf(sesso);
-	this.indirizzo_Email=indirizzo_Email;
-	this.password=password;
-	// TODO Auto-generated constructor stub
-}
-	
+
 
 
 
@@ -65,6 +57,11 @@ public Account(String nome, String cognome, String data_nascita, String sesso, S
 		return this.password;
 	}
 	
+	public long getidFacebook() {
+		// TODO Auto-generated method stub
+		return this.idFacebook;
+	}
+	
 	public void setCodice(Long id) {
 		// TODO Auto-generated method stub
 		this.id=id;	
@@ -100,6 +97,11 @@ public Account(String nome, String cognome, String data_nascita, String sesso, S
 		// TODO Auto-generated method stub
 		this.password=password;
 		
+	}
+	
+	public void setidFacebook(Long idFacebook) {
+		// TODO Auto-generated method stub
+		this.idFacebook=idFacebook;	
 	}
 
 
