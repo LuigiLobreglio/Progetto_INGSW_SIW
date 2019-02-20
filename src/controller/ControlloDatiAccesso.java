@@ -19,8 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.Account;
+import model.VoceProdotto;
 import persistence.SingletonDatabaseManager;
 import persistence.dao.AccountDao;
+import persistence.dao.VoceProdottoDao;
 
 /**
  * Servlet implementation class ControlloDatiAccesso
@@ -67,38 +69,64 @@ public class ControlloDatiAccesso extends HttpServlet {
 			String email=json.getString("indEmail"); 
 			System.out.println(email);
 	*/		
+		
+		System.out.println("Servlet ControlloDatiAccesso");
+
+		if(request.getParameter("idFacebook")!=null){
+			
+			System.out.println("Accesso con Facebook");
+			request.getSession().setAttribute("nome", request.getParameter("nome"));
+			request.getSession().setAttribute("idAccount", request.getParameter("id"));
+			System.out.println("Settati nome e idAccount");
+			System.out.println("Attributo di sessione 'idAccount' uguale a: "+String.valueOf(request.getSession().getAttribute("idAccount")));
+			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
+			List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(String.valueOf(request.getSession().getAttribute("idAccount"))));
+			System.out.println("Settate le voci del carrello associate all'utente");
+			request.getSession().setAttribute("vociCarrello", vociCarrello);
+			//response.sendRedirect(request.getContextPath()+"/gestioneAccount/accessoConsentito.jsp");
+			return;
+		}
+		
+		else {
+			
+			System.out.println("Accesso standard");
+
+	
 			AccountDao accDao = SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
 			Account account=accDao.findByEmailKey(request.getParameter("indEmail"));
-
-				if(!account.getPassword().equals("null")) {
+			System.out.println("String.valueof(account)= "+String.valueOf(account));
+			if(String.valueOf(account)!="null") {
+				
+				String password= request.getParameter("password");
+				MessageDigest md;
+				try {
 					
-					String password= request.getParameter("password");
-					MessageDigest md;
-						try {
-							md = MessageDigest.getInstance("SHA-256");
+					md = MessageDigest.getInstance("SHA-256");
 
-							//Passing data to the created MessageDigest Object
-							md.update(password.getBytes());
-				      
-							//Compute the message digest
-							byte[] digest = md.digest();      
+					//Passing data to the created MessageDigest Object
+					md.update(password.getBytes());
+					//Compute the message digest
+					byte[] digest = md.digest();      
 				     
-							//Converting the byte array in to HexString format
-							StringBuffer hexString = new StringBuffer();
+					//Converting the byte array in to HexString format	
+					StringBuffer hexString = new StringBuffer();
 				      
-							for (int i = 0;i<digest.length;i++) {
-								hexString.append(Integer.toHexString(0xFF & digest[i]));
-							}	
+					for (int i = 0;i<digest.length;i++) {
+						hexString.append(Integer.toHexString(0xFF & digest[i]));
+					}	
 							
-							password=hexString.toString();
-							System.out.println(password);
-							System.out.println("qui"+account.getPassword());
+					password=hexString.toString();
 							
-							if(password.equals(account.getPassword()))
-							{
-								request.getSession().setAttribute("nome", account.getNome());
-								request.getSession().setAttribute("idAccount", account.getidAccount());
-								//JSONObject result= new JSONObject();
+					if(password.equals(account.getPassword())){
+						request.getSession().setAttribute("nome", account.getNome());
+						request.getSession().setAttribute("idAccount", account.getidAccount());
+						System.out.println("Settati nome e idAccount");
+						System.out.println("Attributo di sessione 'idAccount' uguale a: "+String.valueOf(request.getSession().getAttribute("idAccount")));
+						VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
+						List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(String.valueOf(request.getSession().getAttribute("idAccount"))));
+						System.out.println("Settate le voci del carrello associate all'utente");
+						request.getSession().setAttribute("vociCarrello", vociCarrello);
+						//	JSONObject result= new JSONObject();
 								/*try {
 									result.put("descrizione", new String("loginOk"));				   
 									String jsonurl = result.toString();
@@ -109,22 +137,17 @@ public class ControlloDatiAccesso extends HttpServlet {
 									} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}
-								
-							
-								
-				*/				
-								response.sendRedirect(request.getContextPath()+"/gestioneAccount/accessoConsentito.jsp");
-								//request.getRequestDispatcher("gestioneAccount/accessoConsentito.jsp").forward(request, response);
-
-
-							}
-							
-							else
-							{
-								System.out.println("password_errata");
-								request.getSession().setAttribute("nome", null);
-								request.getSession().setAttribute("idAccount", null);
+								}	
+								 */				
+						response.sendRedirect(request.getContextPath()+"/gestioneAccount/accessoConsentito.jsp");
+						//request.getRequestDispatcher("gestioneAccount/accessoConsentito.jsp").forward(request, response);
+					}
+						
+					else {
+					
+						System.out.println("password_errata");
+						request.getSession().setAttribute("nome", null);
+						request.getSession().setAttribute("idAccount", null);
 						/*		JSONObject result= new JSONObject();
 								try {
 									result.put("descrizione", new String("password_errata"));				   
@@ -137,27 +160,24 @@ public class ControlloDatiAccesso extends HttpServlet {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								*/
-								request.getSession().setAttribute("errore", new String("password_errata"));
-								//response.sendRedirect("/E-commerce/gestioneAccount/accessoNegato.jsp");
-								request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
-
-
-				
-							}
+						 		*/
+						request.getSession().setAttribute("errore", new String("password_errata"));
+							//	response.sendRedirect("/E-commerce/gestioneAccount/accessoNegato.jsp");
+						request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
+					}
 								
-						} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
 						e.printStackTrace();
-						}
+					}
 					
-				}
+			}
 				
-				else {
-					System.out.println("email_errata");
-					request.getSession().setAttribute("nome", null);
-					request.getSession().setAttribute("idAccount", null);
-			/*		JSONObject result= new JSONObject();
+			else {
+				System.out.println("email_errata");
+				request.getSession().setAttribute("nome", null);
+				request.getSession().setAttribute("idAccount", null);
+				/*		JSONObject result= new JSONObject();
 					try {
 						result.put("descrizione", new String("password_errata"));				   
 						String jsonurl = result.toString();
@@ -170,17 +190,18 @@ public class ControlloDatiAccesso extends HttpServlet {
 						e.printStackTrace();
 					}
 					*/
-					request.getSession().setAttribute("errore", new String("email_errata"));
-					request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
-
-					
-				}
-/*			
-		} catch (JSONException e) {
+				request.getSession().setAttribute("errore", new String("email_errata"));
+				request.getRequestDispatcher("gestioneAccount/accessoNegato.jsp").forward(request, response);
+			}
+			
+			/*			
+			} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			}
+			 */	
 		}
-	*/	
 	}
+
 
 }

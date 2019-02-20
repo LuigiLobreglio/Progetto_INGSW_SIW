@@ -174,7 +174,7 @@ prefix="c" %>
         
         <div class="row promo">
         	<a href="#"> 
-        		<div class="col-md-4 promo-item item-1"> 
+        		<div class="col-md-6 promo-item item-1"> 
 					<h3>
 						Pianifica la tua dieta!
 					</h3>
@@ -182,7 +182,7 @@ prefix="c" %>
             </a>
             
             <a href="${pageContext.request.contextPath}/RicercaProdotto">
-           		 <div class="col-md-4 promo-item item-2" >
+           		 <div class="col-md-6 promo-item item-2" >
 					<h3>
 						Cerca prodotti!
 					</h3>

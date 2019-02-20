@@ -48,48 +48,70 @@ public class IscrizioneAccount extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	/*	String jsonReceived = "";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-		String line = reader.readLine();
-		while (line != null) {
-			jsonReceived = jsonReceived + line + "\n";
-			line = reader.readLine();
-		}
-		System.out.println(jsonReceived);
-		*/
-	//	try {
-			//JSONObject json = new JSONObject(jsonReceived);
-			Account account= new Account();
-			account.setNome(request.getParameter("nome"));
-			account.setCognome(request.getParameter("cognome"));
-			account.setSesso(request.getParameter("sesso"));
-			account.setData_nascita(request.getParameter("dataNascita"));
-			account.setIndirizzo_email(request.getParameter("email"));	
-			account.setPassword(request.getParameter("password"));
-					
-			AccountDao accDao = SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
-			accDao.save(account);
-			
-			response.sendRedirect("/E-commerce/gestioneAccount/iscrizioneEffettuata.jsp");
+	
+		System.out.println("Servlet IscrizioneAccount.java");
 
-		/*	RequestDispatcher rd = request.getRequestDispatcher("/gestioneAccount/iscrizioneEffettuata.jsp");
-			rd.forward(request, response);
-		*/
+		Account account= new Account();
+		AccountDao accDao = SingletonDatabaseManager.getInstance().getDaoFactory().getAccountDAO();
+		String idFacebook=String.valueOf(request.getParameter("idFacebook"));
+		System.out.println(idFacebook);
+		
+			if(idFacebook!="null"){
+				
+				System.out.println("idFacebook non nullo, quindi iscrizione o accesso con Facebook");
+				String idAccount;
+
+				if( String.valueOf(accDao.findByIdFacebook(Long.parseUnsignedLong(idFacebook)))!="null") {
+					System.out.println("idFacebook presente nel database, iscrizione effettuata precedentemente, quindi accesso");
+				/*	response.setContentType("text/plain");
+					response.setCharacterEncoding("UTF-8");
+					out=response.getWriter();
+					out.write(idAccount);
+					out.close();
+				*/
+					idAccount=String.valueOf(accDao.findByIdFacebook(Long.parseUnsignedLong(idFacebook)));
+
+				}
+				
+				else {
+					
+					System.out.println("idFacebook non presente nel database, iscrizione non effettuata precedentemente, quindi salvataggio");
+
+					account.setNome(request.getParameter("nome"));
+					account.setCognome(request.getParameter("cognome"));
+					account.setIndirizzo_email(request.getParameter("indirizzo_Email"));	
+					account.setPassword("facebook");
+					account.setidFacebook(Long.parseUnsignedLong(idFacebook));
+				
+					accDao.save(account);
+					
+					idAccount=String.valueOf(accDao.findByIdFacebook(Long.parseUnsignedLong(idFacebook)));
+
+
+					//request.getRequestDispatcher("/inviaCredenziali").forward(request, response);
+				}
+				
+				request.getRequestDispatcher("/inviaCredenziali?id="+idAccount).forward(request, response);
+
+			}
+			else {
+				
+				System.out.println("idFacebook  nullo, quindi si tratta di iscrizione standard");
+
+				account.setNome(request.getParameter("nome"));
+				account.setCognome(request.getParameter("cognome"));
+				account.setSesso(request.getParameter("sesso"));
+				System.out.println("dataNascita");
+				System.out.println(String.valueOf(request.getParameter("dataNascita")));
+				account.setData_nascita(request.getParameter("dataNascita"));
+				account.setIndirizzo_email(request.getParameter("email"));	
+				account.setPassword(request.getParameter("password"));
+		
+				accDao.save(account);
 			
-			/*	
-		 
-			JSONObject iscrizioneControllo = new JSONObject();
-			
-				iscrizioneControllo.put("controllo", new Boolean(true));				   
-				String result = iscrizioneControllo.toString();
-				out=response.getWriter();
-				out.write(result);
-				out.close();			
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+				response.sendRedirect("/E-commerce/gestioneAccount/iscrizioneEffettuata.jsp");
+			}
+
 	}	
 
 }

@@ -72,10 +72,11 @@ prefix="c" %>
             </div>
             
             <!-- Navbar links  -->
-            <div class="collapse navbar-collapse" id="navbar">
-            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto?tipo=byNome">
+          <div class="collapse navbar-collapse" id="navbar">
+            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" required>
+    				<input id="spazio-ricerca" type="hidden" name="tipo"  value="byNome" >
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>
@@ -127,13 +128,141 @@ prefix="c" %>
         </div><!-- /.container -->
     </nav>
     
-    <div style="margin-top: 100px; margin-left: 100px">
+    <div style="margin-top: 100px; text-align:center">
         <c:if test="${nome != null}">
 			<h2>Ehy, hai già fatto accesso!</h2>
 			<p> <a href="${pageContext.request.contextPath}/controllaPermessi?logout=true"><span class="glyphicon glyphicon-log-out"></span> Esci </a> se vuoi accedere da un altro profilo o effettuare una nuova iscrizione!</p>					
 		</c:if>	
         <c:if test="${nome == null}">
 			<h2>Effettua l'accesso!</h2>
+			<br>
+	
+<div class="fb-login-button" data-scope="email" data-onlogin="checkLoginState();" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+
+<br>
+
+	<script>
+	
+	  function statusChangeCallback(response) {
+		    console.log('statusChangeCallback');
+		    console.log(response);
+		    // The response object is returned with a status field that lets the
+		    // app know the current login status of the person.
+		    // Full docs on the response object can be found in the documentation
+		    // for FB.getLoginStatus().
+		    if (response.status === 'connected') {
+      		// Logged into your app and Facebook.
+      			 console.log( 'Connesso a Facebook e all\'app');
+			var resp;
+		    
+			FB.api('/me', {fields: 'id, first_name, last_name, email'}, function(responses) {
+		    	      console.log( responses);
+		    	      resp=responses;
+		    	  	$.ajax({ type: "POST",
+		          		 url: "${pageContext.request.contextPath}/iscriviCliente",
+		          		 data: { "idFacebook": resp.id, "nome": resp.first_name, "cognome":resp.last_name, "indirizzo_Email": resp.email},
+		          		 success: function(idAccount){ 
+									
+		          			window.location.replace("${pageContext.request.contextPath}/gestioneAccount/accessoConsentito.jsp");
+
+		          		 		},
+		   			
+		          		 error: function(){
+		          			 	alert(stringa_email+"Chiamata fallita!!!");
+		          		 		} 
+		   	
+		   		});/*
+		    	      $.post("${pageContext.request.contextPath}/iscriviCliente", { "idFacebook": resp.id, "nome": resp.first_name, "cognome":resp.last_name, "indirizzo_Email": resp.email}, function() {
+		    	          alert(data);
+		    	      });
+*/
+		    	    });
+    
+
+		 
+      		}
+		    else if (response.status === 'not_authorized'){
+     			 console.log( 'Connesso a Facebook, ma non all\'app');
+
+		    	
+		    }
+		    else {
+      		// The person is not logged into your app or we are unable to tell.
+    			 console.log( 'Non connesso a Facebook e all\'app, oppure non è possibile saperlo');
+
+    		}
+  
+		}
+	
+	  window.fbAsyncInit = function() {
+			
+		    FB.init({
+		        appId      : '246262486285203',
+		        cookie     : false,  // enable cookies to allow the server to access 
+		                            // the session
+		        xfbml      : true,  // parse social plugins on this page
+		        version    : 'v3.2' // The Graph API version to use for the call
+		      });
+		    
+		    // Now that we've initialized the JavaScript SDK, we call 
+		    // FB.getLoginStatus().  This function gets the state of the
+		    // person visiting this page and can return one of three states to
+		    // the callback you provide.  They can be:
+		    //
+		    // 1. Logged into your app ('connected')
+		    // 2. Logged into Facebook, but not your app ('not_authorized')
+		    // 3. Not logged into Facebook and can't tell if they are logged into
+		    //    your app or not.
+		    //
+		    // These three cases are handled in the callback function.
+
+		    FB.getLoginStatus(function(response) {
+			    console.log(response);
+		    });
+		  
+		  
+		    };
+		    
+		    
+		    function checkLoginState() {
+			    console.log('checkLoginState');
+
+		        FB.getLoginStatus(function(response) {
+		          statusChangeCallback(response);
+		        });
+		      }
+
+	/*
+	document.getElementById('custom-login-button').addEventListener('click', function (){
+		
+			FB.login(function(response) { 
+		    	console.log(response);
+
+			}, {
+				scope: 'email',
+				return_scopes:true
+				});
+			
+			
+		
+	});
+	
+	*/
+
+
+// Load the SDK asynchronously
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/it_IT/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  
+ 	 </script>
+ 	 
+	<p><span>oppure</span></p>
 			<p>Inserisci le tue credenziali</p>    
 		</c:if>	
 	</div>

@@ -13,8 +13,8 @@ prefix="c" %>
     System.out.println(nome);
     if (null == nome) {
     	
-       RequestDispatcher rd = request.getRequestDispatcher("/gestioneAccount/faiAccesso.jsp");
-       rd.forward(request, response);
+		response.sendRedirect(request.getContextPath()+"/gestioneAccount/faiAccesso.jsp");
+
     }
     
     %>
@@ -74,10 +74,11 @@ prefix="c" %>
             </div>
             
             <!-- Navbar links  -->
-            <div class="collapse navbar-collapse" id="navbar">
-            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto?tipo=byNome">
+			<div class="collapse navbar-collapse" id="navbar">
+            <form class="navbar-form navbar-left" method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
   				<div class="input-group">
-    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" >
+    				<input id="spazio-ricerca" type="text" class="form-control" name="nomeCommerciale" placeholder="Cerca un prodotto!"  onkeyup="ricercaLive()" required>
+    				<input id="spazio-ricerca" type="hidden" name="tipo"  value="byNome" >
     				<div class="input-group-btn">
       					<button id="btn-ricerca" class="btn btn-default" type="submit">
         					<i class="glyphicon glyphicon-search"></i>
@@ -130,7 +131,7 @@ prefix="c" %>
     </nav>
     
     <div style="margin-top: 100px; margin-left: 100px">
-		<h2>Bentornato, ${nome} !</h2>
+		<h2>Ciao, ${nome} !</h2>
 		<p>Cosa vuoi fare?</p>    
 	</div>
     

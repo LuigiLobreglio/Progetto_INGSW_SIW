@@ -87,7 +87,7 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 				throw new PersistenceException(e.getMessage());
 			}
 		}
-		
+
 		return vociProdotto;
 	}
 

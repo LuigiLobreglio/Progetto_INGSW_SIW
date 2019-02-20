@@ -30,13 +30,9 @@ public class GestionePermessiUtente extends HttpServlet {
 		String logout= request.getParameter("logout");
 //		System.out.println(logout);
 		if(logout.equals("true")) {
-			
-			request.getSession().setAttribute("nome", null);
-			request.getSession().setAttribute("idAccount", null);
-			request.getSession().setAttribute("logout", null);
 
 			request.getSession().invalidate();
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			response.sendRedirect("index.jsp");
 		}
 
 	}

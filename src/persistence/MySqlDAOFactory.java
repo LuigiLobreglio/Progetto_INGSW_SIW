@@ -15,11 +15,9 @@ private static  DataSource dataSource;
 
 	static {
 		try {
-			System.out.println("Qui");
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			dataSource=new DataSource("jdbc:mysql://localhost:3306/mydb","luigilob170001","IngswSiw19");
 		
-			System.out.println("Quo");
 
 		} 
 		catch (Exception e) {
