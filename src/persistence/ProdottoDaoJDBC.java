@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Locale;
 
 import model.Prodotto;
 import persistence.dao.ProdottoDao;
@@ -66,7 +69,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getInt("prezzo"));				
+				prodotto.setPrezzo(result.getDouble("prezzo"));				
 			
 				prodotti.add(prodotto);
 			}
@@ -99,8 +102,9 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 				prodotto.setCategoria(result.getString("categoria"));
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
-				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getDouble("prezzo"));				
+				prodotto.setDescrizione(result.getString("descrizione"));
+				prodotto.setPrezzo(result.getDouble("prezzo"));							
+				
 						}
 		} catch (SQLException e) {
 			throw new PersistenceException(e.getMessage());
@@ -136,8 +140,8 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getDouble("prezzo"));				
-			
+				prodotto.setPrezzo(result.getDouble("prezzo"));							
+						
 				prodotti.add(prodotto);
 			}
 		} catch (SQLException e) {
@@ -210,8 +214,8 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
 				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getDouble("prezzo"));				
-			
+				prodotto.setPrezzo(result.getDouble("prezzo"));							
+						
 				prodotti.add(prodotto);
 			}
 		} catch (SQLException e) {
@@ -245,7 +249,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			
 			}
 			String query_cat=" ";
-			if(!categoria.equals("---")){
+			if(!categoria.equals("null")){
 				if(idProdotto!=null)
 					query_cat=" AND ";
 					
@@ -254,7 +258,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			
 			String query_nome=" ";
 			if(!(nomeCommerciale[0].isEmpty())){
-				if(idProdotto!=null || !categoria.equals("---"))
+				if(idProdotto!=null || !categoria.equals("null"))
 					query_nome=" AND ";
 					
 					for(int i=0; i<nomeCommerciale.length;i++) {
@@ -267,7 +271,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 			
 			String query_prezzo_min=" ";
 			if(prezzo_min!=0){
-				if(idProdotto!=null ||  !categoria.equals("---") || !(nomeCommerciale[0].isEmpty()))
+				if(idProdotto!=null ||  !categoria.equals("null") || !(nomeCommerciale[0].isEmpty()))
 					query_prezzo_min=" AND ";
 					
 				query_prezzo_min=query_prezzo_min+"prezzo>="+prezzo_min+" ";
@@ -275,7 +279,7 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 
 			String query_prezzo_max=" ";
 			if(prezzo_max!=Integer.MAX_VALUE){
-				if(idProdotto!=null || !categoria.equals("---") || !(nomeCommerciale[0].isEmpty())|| prezzo_min!=0)
+				if(idProdotto!=null || !categoria.equals("null") || !(nomeCommerciale[0].isEmpty())|| prezzo_min!=0)
 					query_prezzo_max=" AND ";
 			
 				query_prezzo_max=query_prezzo_max+"prezzo<="+prezzo_max+" ";
@@ -291,9 +295,8 @@ public class ProdottoDaoJDBC implements ProdottoDao {
 				prodotto.setCategoria(result.getString("categoria"));
 				prodotto.setNomeCommerciale(result.getString("nomeCommerciale"));
 				prodotto.setImmagine(result.getString("immagine"));
-				prodotto.setDescrizione(result.getString("descrizione"));	
-				prodotto.setPrezzo(result.getDouble("prezzo"));				
-			
+				prodotto.setDescrizione(result.getString("descrizione"));		
+				prodotto.setPrezzo(result.getDouble("prezzo"));							
 				prodotti.add(prodotto);
 			}
 		} catch (SQLException e) {

@@ -3,6 +3,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" 
 prefix="c" %>
  <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+ <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+ 
 
 
     <%
@@ -48,8 +50,6 @@ prefix="c" %>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
 
 
 
@@ -133,23 +133,18 @@ prefix="c" %>
         </div><!-- /.container -->
      </nav>
         
-      <div class="container">
+      <div class="container" style="margin-block-start:100px">
         
-		<div class="side-bar col-md-3" style="margin-block-start: 100px;position: relative;">
+		<div class="side-bar col-md-3" >
 
 			<form method="get" action="${pageContext.request.contextPath}/RicercaProdotto">
-			    				<input id="spazio-ricerca" type="hidden" name="tipo"  value="avanzata" >
-			
-   				<div class="input-group-btn">
-      					<button id="btn-ricerca" class="btn btn-default" type="submit">Ricerca avanzata
-        					<i class="glyphicon glyphicon-search"></i>
-      					</button>
-    			</div>
-    					
+			    
+			    <input id="spazio-ricerca" type="hidden" name="tipo"  value="avanzata" >
+			    					
 				<div class="search-hotel">
 					<h3 class="agileits-sear-head">Codice</h3>
 						<div>
-							<input class="form-control" type="search" placeholder="Codice identificativo..." name="idProdotto" >
+							<input class="form-control" type="number" placeholder="Codice identificativo" name="idProdotto" >
 						</div>				
 				</div>
 				
@@ -164,7 +159,7 @@ prefix="c" %>
 					<h3 class="agileits-sear-head">Categoria</h3>
 				
 					<select class="form-control" name="categoria">
-						<option>---</option>
+						<option>Tutte le categorie</option>
 						<option value="Cereali_e_Derivati">Cereali e derivati</option>
 						<option value="Carne">Carne</option>
 						<option value="Pesce">Pesce</option>
@@ -186,21 +181,24 @@ prefix="c" %>
 					<h3 class="agileits-sear-head">Prezzo</h3>
 					<p>
 						<label for="prezzoMin">Da:</label>
-						<input class="form-control" type="text" name="prezzoMin" >
+						<input class="form-control" type="number" name="prezzoMin" placeholder="Prezzo minimo" min="0">
 						<label for="prezzoMax">A:</label>
-						<input  class="form-control" type="text" name="prezzoMax" >
+						<input  class="form-control" type="number" name="prezzoMax" placeholder="Prezzo massimo" min="0" >
 					</p>
 				</div>
+	    <br>
+	    		<button id="btn-ricerca" class="btn btn-primary btn-block" type="submit"><i class="glyphicon glyphicon-search"></i> Ricerca avanzata</button>
+				
 				
 			</form>
 				<!-- //price range -->
 			
-				</div>
-
-	<div class="agileinfo-ads-display col-md-9 w3l-rightpro">
-				<div class="wrapper">
-				<div class="product-sec1">
-		
+		</div>
+        	
+		<div class="agileinfo-ads-display col-md-9 w3l-rightpro">
+		<!-- 	
+			<div class="product-sec1">
+		 -->	
 		    	<c:if test="${inizio == null}">
 		    	
 		    		<h4></h4>
@@ -214,39 +212,76 @@ prefix="c" %>
 		    	</c:if>
 				
 			   	<c:if test="${prodotti != null && inizio==false}">
-				
+			   	
+				<small style="margin-inline-start:16px">Risultati in ${param.categoria}:</small>
+			<small style="color:orange;">${param.nomeCommerciale}</small>
+			<small> = ${fn:length(prodotti)} </small> <br>
 				<c:forEach items="${prodotti}" var="prod">
 				
-				
-				<div class=" col-sm-6 col-xs-4 ">
-					<div class="thumbnail featured-product">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/${prod.immagine}" alt="">
+				<div class="col-lg-3 col-md-4 col-sm-6 ">
+					<div class="thumbnail featured-product" style="position: relative; min-heighT:400px ">
+	
+					<form id="dettagli-prodotto-form" action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
+					
+						<a href='#'>
+						
+							<input type="hidden" name="idProdotto" value="${prod.idProdotto}">
+							<input type="image" src="${pageContext.request.contextPath}/${prod.immagine}" 
+								   style=" margin-right: auto; 
+								           margin-left: auto; 
+								           display: block; 
+								           max-width: 100%; 
+								           height: auto; 
+								           vertical-align: middle;
+                                           border-style: none;
+                                           border: 0;"
+                            >
+					
+							
 						</a>
-						<div class="caption">
-							<h3> 
-								<a href="single.html">${prod.nomeCommerciale}</a>
+					
+					</form>
+						
+						<div class="caption" style="background-color: #ddddddb8;  border-radius: 5px;"	>
+							
+							<h3 style="min-height:63px;" >
+								<form id="dettagli-prodotto-form" action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
+							
+									<input type="hidden" name="idProdotto" value="${prod.idProdotto}">
+									<button id="nomeProdottoLink" type="submit">${prod.nomeCommerciale}</button>
+								</form>
 							</h3>
-							<p class="price">${prod.prezzo} €</p>
+							
+							<p class="price"> <fmt:formatNumber  type="number" pattern="0.00" value="${prod.prezzo}"/> €</p>
 
 						<!-- Input Group -->
-						<div class="input-group">
-										<form action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
-											<fieldset>
+										<form id="dettagli-prodotto-form" action="${pageContext.request.contextPath}/visualizzaProdotto" method="post">
 												<input type="hidden" name="idProdotto" value="${prod.idProdotto}">
-												<input type="submit" name="submit" value="Dettagli" class="button">
-											</fieldset>
-										</form> <!-- 
-							<input type="number" class="form-control" value="1">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
+												<input id="dettagliProdottoBottone" class="btn btn-primary btn-block"  type="submit" name="submit" value="Vedi prodotto" >
+
+										</form>
+	
+						<div>						
+						
+						<form action="${pageContext.request.contextPath}/aggiungiAlCarrello" method="post">
+								<input type="hidden" name="idAccountProprietario" value="${idAccount}">
+								<input type="hidden" name="idProd" value="${prod.idProdotto}">
+								<input type="hidden" name="immagine" value="${prod.immagine}">
+								<input type="hidden" name="nomeCommerciale" value="${prod.nomeCommerciale}">
+								<input type="hidden" name="prezzo" value="${prod.prezzo}">
+								
+								<button id="aggiungiProdottoDaListaBottone"class="btn btn-primary btn-block" type="submit" onclick="test()">								
 									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
-									Add to Cart
+									Aggiungi al carrello
+									
 								</button>
-							</span> -->
+								
+						</form>
+	
 						</div>
 					</div>
 				</div>
+
 			</div>
 				<!--  
 					<div class="col-sm-4">
@@ -281,8 +316,6 @@ prefix="c" %>
 					</div>
 					
 
-				</div>
-			</div>
 	
 		</div>        
 	
@@ -354,5 +387,7 @@ prefix="c" %>
         </div>
         
 	</footer>
+	
+
 </body>
 </html>

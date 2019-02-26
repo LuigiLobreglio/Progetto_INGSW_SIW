@@ -5,6 +5,8 @@ public class IndirizzoSpedizione {
 
 	private Long idIndirizzo;
 	private Long idAccountProprietario;
+	private String nomeDestinatario;
+	private String cognomeDestinatario;
 	private String stato;
 	private String citta;
 	private String codicePostale;
@@ -14,8 +16,10 @@ public class IndirizzoSpedizione {
 
 	public IndirizzoSpedizione() {}
 	
-	public IndirizzoSpedizione(Long idAccountProprietario, String stato, String citta, String codicePostale, String via, String numeroCivico, String dettagli) {
+	public IndirizzoSpedizione(Long idAccountProprietario, String nomeDestinatario, String cognomeDestinatario, String stato, String citta, String codicePostale, String via, String numeroCivico, String dettagli) {
 		this.idAccountProprietario=idAccountProprietario;
+		this.nomeDestinatario=nomeDestinatario;
+		this.cognomeDestinatario=cognomeDestinatario;
 		this.stato=stato;
 		this.citta=citta;
 		this.codicePostale=codicePostale;
@@ -35,7 +39,16 @@ public class IndirizzoSpedizione {
 		// TODO Auto-generated method stub
 		return this.idAccountProprietario;
 	}
-
+	
+	public String getNomeDestinatario() {
+		// TODO Auto-generated method stub
+		return this.nomeDestinatario;
+	}
+	
+	public String getCognomeDestinatario() {
+		// TODO Auto-generated method stub
+		return this.cognomeDestinatario;
+	}
 	public String getStato() {
 		// TODO Auto-generated method stub
 		return this.stato;
@@ -76,6 +89,16 @@ public class IndirizzoSpedizione {
 		this.idAccountProprietario=idAccountProprietario;	
 	}
 
+	public void setNomeDestinatario(String nomeDestinatario) {
+		// TODO Auto-generated method stub
+		this.nomeDestinatario=nomeDestinatario;
+	}	
+	
+	public void setCognomeDestinatario(String cognoneDestinatario) {
+		// TODO Auto-generated method stub
+		this.cognomeDestinatario=cognoneDestinatario;
+	}	
+	
 	public void setStato(String stato) {
 		// TODO Auto-generated method stub
 		this.stato=stato;

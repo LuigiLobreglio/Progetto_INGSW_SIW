@@ -13,7 +13,7 @@ public class Ordine{
 	private double totaleOrdine;
 	private StatoOrdine statoOrdine;
 	private String dataEffettuazione;
-	private Long idIndirizzoConsegna;
+	private String indirizzoSpedizione;
 	public Ordine() {}
 	
 public Ordine(Long idAccountProprietario, double spesaSpedizione, double totaleOrdine,String statoOrdine) {
@@ -57,9 +57,9 @@ public Ordine(Long idAccountProprietario, double spesaSpedizione, double totaleO
 		return this.dataEffettuazione;
 	}
 	
-	public long getIdIndirizzoConsegna() {
+	public String getIndirizzoSpedizione() {
 		// TODO Auto-generated method stub
-		return this.idIndirizzoConsegna;
+		return this.indirizzoSpedizione;
 	}
 
 
@@ -94,9 +94,9 @@ public Ordine(Long idAccountProprietario, double spesaSpedizione, double totaleO
 		this.dataEffettuazione=dataEffettuazione;
 	}
 
-	public void setIdIndirizzoConsegna(Long idIndirizzoConsegna){
+	public void setIndirizzoSpedizione(String indirizzoSpedizione){
 		// TODO Auto-generated method stub
-		this.idIndirizzoConsegna=idIndirizzoConsegna;
+		this.indirizzoSpedizione=indirizzoSpedizione;
 	}
 	
 }

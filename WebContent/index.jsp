@@ -106,7 +106,7 @@ prefix="c" %>
 						</ul>
 					</li>
 					<li>
-                        <a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>
+                        <a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>
                         
                     </li>
                 </ul>
@@ -193,126 +193,13 @@ prefix="c" %>
     
     </div><!-- /.container-fluid -->
 
-	<!-- Featured Products -->
-	<div class="container">
-		<h1 class="text-center">World Class Products</h1>
-		<div class="row">
-		
-			<!-- Product 1 -->
-			<div class="col-sm-6 col-md-3">
-				<div class="thumbnail featured-product">
-					<a href="#">
-						<img src="images/pepper.jpg" alt="">
-					</a>
-					<div class="caption">
-						<h3>Premium Niche</h3>
-						<p>Nori grape silver beet broccoli kombu beet greens fava bean potato quandong celery. Bunya nuts black-eyed pea prairie turnip leek lentil turnip greens parsnip.</p>
-						<p class="price">$10.45</p>
 
-						<!-- Input Group -->
-						<div class="input-group">
-							<input type="number" class="form-control" value="1">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
-									Add to Cart
-								</button>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Product 2 -->
-			<div class="col-sm-6 col-md-3">
-				<div class="thumbnail featured-product">
-					<a href="#">
-						<img src="images/jars.jpg" alt="">
-					</a>
-					<div class="caption">
-						<h3>Handy Holistic</h3>
-						<p>Nori grape silver beet broccoli kombu beet greens fava bean potato quandong celery. Bunya nuts black-eyed pea prairie turnip leek lentil turnip greens parsnip.</p>
-						<p class="price"><s>$24.99</s> $18.99</p>
-
-						<!-- Input Group -->
-						<div class="input-group">
-							<input type="number" class="form-control" value="1">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
-									Add to Cart
-								</button>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Product 3 -->
-			<div class="col-sm-6 col-md-3">
-				<div class="thumbnail featured-product">
-					<a href="#">
-						<img src="images/pot.jpg" alt="">
-					</a>
-					<div class="caption">
-						<h3>Seamless Strategic</h3>
-						<p>Nori grape silver beet broccoli kombu beet greens fava bean potato quandong celery. Bunya nuts black-eyed pea prairie turnip leek lentil turnip greens parsnip.</p>
-						<p class="price">$11.50</p>
-
-						<!-- Input Group -->
-						<div class="input-group">
-							<input type="number" class="form-control" value="1">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
-									Add to Cart
-								</button>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Product 4 -->
-			<div class="col-sm-6 col-md-3">
-				<div class="thumbnail featured-product">
-					<a href="#">
-						<img src="images/teapot.jpg" alt="">
-					</a>
-					<div class="caption">
-						<h3>Maintained Strip</h3>
-						<p>Nori grape silver beet broccoli kombu beet greens fava bean potato quandong celery. Bunya nuts black-eyed pea prairie turnip leek lentil turnip greens parsnip.</p>
-						<p class="price">$45.50</p>
-
-						<!-- Input Group -->
-						<div class="input-group">
-							<input type="number" class="form-control" value="1">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
-									Add to Cart
-								</button>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-    </div><!-- /.container -->
-	
-	
-	<div class="container text-center">
-
-		<h1>Unparalleled Service</h1>
-		<p class="lead">Proactively envisioned multimedia based expertise and cross-media growth strategies. Seamlessly visualize quality intellectual capital without superior collaboration and idea-sharing. Holistically pontificate installed base portals after maintainable products without collateral.</p>
-		<img class="img-responsive img-circle center-block" src="images/service.jpg" alt="">
-	</div><!--/.container-->
 	
 		
 	<!-- Footer -->
 	<footer>
 	
-		<h1 class="text-center">Find Us</h1>
+		<h1 class="text-center">La nostra sede</h1>
 		<!-- Map -->
 		<div class="footer-map"></div>	
 			
@@ -320,11 +207,10 @@ prefix="c" %>
 				<div class="row">
 					<div class="col-sm-12 footer-info-item text-center">
 						<p class="lead">
-							31 Spooner Street, Quahog, Rhode Island
-						</p>
+							Ponte Pietro Bucci, 87036 Quattromiglia CS						</p>
 						<h2>Contattaci</h2>
 						<p class="lead"><span class="glyphicon glyphicon-phone-alt"></span> +39 333 33333333<br>
-						luigi.lobreglio@gmail.com <br> dux920@gmail.com </p>
+						lbrlgu95r09g786e@studenti.unical.it</p>
 						
 					</div>
 				</div>
@@ -342,15 +228,18 @@ prefix="c" %>
 							<li><a href="#">Informativa Privacy</a></li>
 						</ul>
 					</div>
+									
+                 	<c:if test="${nome != null}">
 					<div class="col-sm-4 footer-info-item">
-						<h3>Il Mio Account</h3>
+						<h3 ><a style="color:black" href="#">Il Mio Account</a></h3>
 						<ul class="list-unstyled">
-							<li><a href="#">Accedi</a></li>
 							<li><a href="#">La mia pianificazione alimentare</a></li>
-							<li><a href="#">Il mio carrello</a></li>
+							<li><a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp">Il mio carrello</a></li>
 							<li><a href="#">I miei ordini</a></li>
 						</ul>	
 					</div>
+					</c:if>	
+
 					<div class="col-sm-4 footer-info-item">
 						<h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
 						<p>Iscriviti per ricevere offerte esclusive</p>

@@ -19,9 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.Account;
+import model.IndirizzoSpedizione;
 import model.VoceProdotto;
 import persistence.SingletonDatabaseManager;
 import persistence.dao.AccountDao;
+import persistence.dao.IndirizzoSpedizioneDao;
 import persistence.dao.VoceProdottoDao;
 
 /**
@@ -79,10 +81,19 @@ public class ControlloDatiAccesso extends HttpServlet {
 			request.getSession().setAttribute("idAccount", request.getParameter("id"));
 			System.out.println("Settati nome e idAccount");
 			System.out.println("Attributo di sessione 'idAccount' uguale a: "+String.valueOf(request.getSession().getAttribute("idAccount")));
+			
 			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
 			List<VoceProdotto> vociCarrello=voceDao.findByIdAccountProprietario(Long.parseLong(String.valueOf(request.getSession().getAttribute("idAccount"))));
 			System.out.println("Settate le voci del carrello associate all'utente");
-			request.getSession().setAttribute("vociCarrello", vociCarrello);
+
+			request.getSession().setAttribute("vociCarrello", vociCarrello);			
+			
+			IndirizzoSpedizioneDao indirizzoSpedizioneDao= SingletonDatabaseManager.getInstance().getDaoFactory().getIndirizzoSpedizioneDAO();
+			List<IndirizzoSpedizione> indirizziSpedizione=indirizzoSpedizioneDao.findByIdAccountProprietario(Long.parseUnsignedLong(String.valueOf(request.getSession().getAttribute("idAccount"))));
+			System.out.println("Settati gli indirizzi di spedizione associati all'utente");
+
+			request.getSession().setAttribute("indirizzi", indirizziSpedizione);
+
 			//response.sendRedirect(request.getContextPath()+"/gestioneAccount/accessoConsentito.jsp");
 			return;
 		}

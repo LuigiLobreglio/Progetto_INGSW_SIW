@@ -145,24 +145,21 @@ public class AccountDaoJDBC implements AccountDao {
 
 		try {
 			PreparedStatement statement;
-			String query = "select * from account where indirizzo_email='"+email+"'";
+			String query = "select * from account where indirizzo_email='"+email+"' and idFacebook is null";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
-			boolean empty=true;
-				while (result.next()) {
-					empty=false;
+				if (result.next()) {
 					account.setCodice(result.getLong("idAccount"));				
 					account.setNome(result.getString("nome"));				
 					account.setCognome(result.getString("cognome"));
-					account.setData_nascita(result.getDate("data_nascita").toString() );	
+					account.setData_nascita(String.valueOf(result.getDate("data_nascita")) );	
 					account.setSesso(result.getString("sesso"));
 					account.setIndirizzo_email(result.getString("indirizzo_email"));
 					account.setPassword(result.getString("password"));
 				}
+				else
 				
-				if(empty)
-					account.setPassword("null");
-			
+					return null;			
 
 		} catch (SQLException e) {
 			throw new PersistenceException(e.getMessage());
@@ -192,18 +189,24 @@ public class AccountDaoJDBC implements AccountDao {
 	}
 
 	@Override
-	public boolean findByIdFacebook(Long idFacebook) {
+	public Long findByIdFacebook(Long idFacebook) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 		try {
 			PreparedStatement statement;
-			String query = "select exists(select * from mydb.account where idFacebook='"+idFacebook+"') ";
+			String query = "select idAccount from mydb.account where exists(select * from mydb.account as acc where account.idAccount=acc.idAccount and idFacebook='"+idFacebook+"')  ";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
+			if(result.next()) {
 			
-			return result.getBoolean("exists");
-
+				System.out.println(String.valueOf("idAccount= "+result.getLong("idAccount")));
+				return result.getLong("idAccount");
+			}
+			else 
+				
+				return null;
+			
 		} catch (SQLException e) {
 			throw new PersistenceException(e.getMessage());
 		}	 finally {

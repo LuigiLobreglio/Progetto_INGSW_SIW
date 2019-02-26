@@ -127,7 +127,6 @@ h6 {
 
 .featured-product > img,
 .featured-product > a > img {
-	height: 150px;
 }
 
 .featured-product h3 {
@@ -593,18 +592,22 @@ h3.tittle-w3l {
 }
 
 /* Primary Buttons */
-.btn-primary {
+.btn-primary,
+#dettagli-prodotto-form > fieldset > input[type="submit"] {
   color: #fff;
   background-color: orange;
   border-color: orange;
+  white-space:normal;
 }
 .btn-primary:focus,
-.btn-primary.focus {
+.btn-primary.focus ,
+  #dettagli-prodotto-form > fieldset > input[type="submit"]:focus{
   color: #fff;
   background-color: darkorange;
   border-color: darkorange;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+  #dettagli-prodotto-form > fieldset > input[type="submit"]:hover {
   color: #fff;
   background-color: darkorange;
   border-color: darkorange;
@@ -650,4 +653,181 @@ fieldset[disabled] .btn-primary:active,
 fieldset[disabled] .btn-primary.active {
   background-color: sandybrown;
   border-color: sandybrown;
+}
+
+
+
+button#nomeProdottoLink {
+    background:none!important;
+     border:none; 
+     padding:0!important;
+    
+    /*optional*/
+    font-family:arial,sans-serif; /*input has OS specific font-family*/
+     color:#dd845a;
+     cursor:pointer;
+}
+
+button#nomeProdottoLink:hover{
+         text-decoration:underline;
+}
+
+input#dettagliProdottoBottone.btn.btn-primary.btn-block {    
+	 
+    background-color: slategray;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 0px;
+}
+
+input#dettagliProdottoBottone.btn.btn-primary.btn-block:hover{
+	
+	background-color: darkslategray;	
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 0px;
+}
+
+button#aggiungiProdottoDaListaBottone.btn.btn-primary.btn-block{
+	
+	border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border: 0px;
+	
+}
+
+
+a#rivediOrdineBottone.btn.btn-primary.btn-block{
+	
+	background-color: #dfe5f3;
+	border: 0px;
+	
+	color:white;
+	font-size: 15px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+
+	
+}
+
+a#rivediOrdineBottone.btn.btn-primary.btn-block:hover{
+	
+	background-color: #bac8e4;
+	border: 0px;
+	
+	color:white;
+	font-size: 17px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+ 
+	
+}
+
+button#rimuoviIndirizzoBottone.btn.btn-primary.btn-block{
+	
+	background-color:#c66;
+    border: 0px;	
+}
+
+button#rimuoviIndirizzoBottone.btn.btn-primary.btn-block:hover{
+	
+	    background-color: #a44;
+	    border: 0px;	    
+}
+
+a#inserisciIndirizzoBottone.btn.btn-primary.btn-block{
+	color:white;
+	background-color: #8b9dc3;
+    border: 0px;
+    font-size:17px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+  
+}
+
+a#inserisciIndirizzoBottone.btn.btn-primary.btn-block:hover{
+	
+		color:white;
+	    background-color: #6981b2;
+	    border: 0px;
+	    font-size:18px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+ 
+}
+
+a#aggiungiNuovoIndirizzoBottone.btn.btn-primary.btn-block{
+	
+	background-color:#dfe3ee;
+	border: 0px;
+	color:darkslategray;
+	
+}
+
+a#aggiungiNuovoIndirizzoBottone.btn.btn-primary.btn-block:hover{
+	
+	background-color: #8b9dc3;
+	border: 0px;	
+	
+}
+
+
+button#consegnaQuestoIndirizzoBottone.btn.btn-primary.btn-block{
+
+	background-color: turquoise;
+	border: 0px;
+	
+}
+
+
+button#consegnaQuestoIndirizzoBottone.btn.btn-primary.btn-block:hover{
+		background-color: darkturquoise;
+	border: 0px;
+	
+}
+
+a#scegliMetodoPagamentoBottone.btn.btn-primary.btn-block{
+	
+	color: white;
+	background-color: #1e2e4f;
+	font-size:17px;
+	border:0px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+	
+	
+}
+
+a#scegliMetodoPagamentoBottone.btn.btn-primary.btn-block:hover{
+	
+	color:white;
+ 	background-color: #10192a;
+    font-size:18px;
+    border:0px;
+  text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px black;
+ 
+
+	
+}
+
+
+button#pagamentoContrassegnoBottone.btn.btn-primary.btn-block{
+	
+	
+    display: table;
+    margin: 0 auto;
+    max-width: 250px;
+    
+    background-color: #3e3939;
+    border:0px;
+      text-shadow: 1px 1px 2px black, 0 0 15px black, 0 0 5px black;
+    
+}
+
+button#pagamentoContrassegnoBottone.btn.btn-primary.btn-block:hover{
+	
+	
+    display: table;
+    margin: 0 auto;
+    max-width: 250px;
+    font-size:15px;
+    background-color: #1b1818;
+    border:0px;
+      text-shadow: 1px 1px 2px black, 0 0 15px black, 0 0 5px black;
+    
 }

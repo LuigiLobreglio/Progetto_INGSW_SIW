@@ -80,8 +80,14 @@ public class RicercaProdotto extends HttpServlet {
 				
 				idProdotto=Long.parseLong(request.getParameter("idProdotto"));
 	
-			//categoria		
-			categoria=request.getParameter("categoria");
+			//categoria	
+			if(String.valueOf(request.getParameter("categoria")).equals("Tutte le categorie")){
+				categoria="null";
+				
+			}
+			else
+				
+				categoria=request.getParameter("categoria");
 			
 			//nomeCommerciale		
 			System.out.println(request.getParameter("nomeCommerciale").toString().isEmpty());
@@ -111,7 +117,7 @@ public class RicercaProdotto extends HttpServlet {
 				
 				prezzoMax=Integer.parseInt(request.getParameter("prezzoMax"));
 			
-			if(request.getParameter("idProdotto").isEmpty() && request.getParameter("categoria").toString().equals("---") && nomeCommerciale[0].isEmpty() && request.getParameter("prezzoMin").isEmpty() && request.getParameter("prezzoMax").isEmpty()){
+			if(request.getParameter("idProdotto").isEmpty() && request.getParameter("categoria").toString().equals("Tutte le categorie") && nomeCommerciale[0].isEmpty() && request.getParameter("prezzoMin").isEmpty() && request.getParameter("prezzoMax").isEmpty()){
 				
 				request.getSession().setAttribute("prodotti", null);
 				request.getSession().setAttribute("inizio", false);

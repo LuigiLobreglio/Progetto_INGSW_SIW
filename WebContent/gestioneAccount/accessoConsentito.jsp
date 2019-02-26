@@ -110,8 +110,7 @@ prefix="c" %>
 						</ul>
 					</li>
 					<li>
-                        <a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>
-                        
+ 						<a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>                        
                     </li>
                 </ul>
                 

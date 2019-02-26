@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mysql.jdbc.Statement;
+
 import model.Ordine;
 import model.VoceProdotto;
 import persistence.dao.OrdineDao;
@@ -21,18 +23,27 @@ public class OrdineDaoJDBC  implements OrdineDao{
 	}
 	
 	@Override
-	public void save(Ordine ordine) {
+	public Long save(Ordine ordine) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String insert = "insert into Ordine( idAccountProprietario, totaleOrdine, statoOrdine) values (?,?,?)";
 			
-			PreparedStatement statement = connection.prepareStatement(insert);
+			PreparedStatement statement = connection.prepareStatement(insert,new String[]{"Id"});
+
 			statement.setLong(1, ordine.getIdAccountProprietario());		
 			statement.setDouble(2, ordine.getTotaleOrdine());
 			statement.setString(3, ordine.getStatoOrdine());
-				
+			
+			System.out.println("Stampa di prova");
 			statement.executeUpdate();
+			
+			 ResultSet rs = statement.getGeneratedKeys();
+			    if(rs.next()) {
+			    //In this exp, the autoKey val is in 1st col
+			    return rs.getLong(1);
+			    //now this's a real value of col Id
+			    }
 			
 		} catch (SQLException e) {
 			throw new PersistenceException(e.getMessage());
@@ -43,6 +54,7 @@ public class OrdineDaoJDBC  implements OrdineDao{
 				throw new PersistenceException(e.getMessage());
 			}
 		}
+		return null;
 	}
 
 	@Override
@@ -140,14 +152,14 @@ public class OrdineDaoJDBC  implements OrdineDao{
 
 
 	@Override
-	public void updateIndirizzoConsegna(Long idAccountProprietario, Long idOrdine, String idIndirizzoConsegna) {
+	public void updateIndirizzoConsegna(Long idAccountProprietario, Long idOrdine, String indirizzoSpedizione) {
 		// TODO Auto-generated method stub
 		Connection connection = this.dataSource.getConnection();
 
 		try {
 			PreparedStatement statement;
 
-			String update_query = " UPDATE mydb.ordine SET idIndirizzoConsegna = '"+idIndirizzoConsegna+"'  WHERE (idAccountProprietario = '"+idAccountProprietario+"') AND (idOrdine= '"+idOrdine+"')";
+			String update_query = " UPDATE mydb.ordine SET indirizzoSPedizione = '"+indirizzoSpedizione+"'  WHERE (idAccountProprietario = '"+idAccountProprietario+"') AND (idOrdine= '"+idOrdine+"')";
 
 			statement = connection.prepareStatement(update_query);
 			statement.executeUpdate();
