@@ -56,11 +56,33 @@ public class AggiornaOrdine extends HttpServlet {
 
 			Gson gson = new Gson();
 	        String jsonIndirizzoScelto = gson.toJson(indirizzoSpedizione);
-	        System.out.println("jsonIndirizzioScelto = " + jsonIndirizzoScelto);		 
+	        System.out.println("jsonIndirizzioScelto = " + jsonIndirizzoScelto);	
+	       
+	        double spesaSpedizione;
+	        StringBuilder str = new StringBuilder(jsonIndirizzoScelto);
+			if(String.valueOf(indirizzoSpedizione.getStato()).equals("IT"))
+			{ 
+			
+				spesaSpedizione=6.00;
+		      // insert character value at offset 8
+		      str.insert(jsonIndirizzoScelto.length()-1, ",\"spesaSpedizione\":\"6\"");
+			}
+			else {
+				
+				spesaSpedizione=12.00;
+			      str.insert(jsonIndirizzoScelto.length()-1, ",\"spesaSpedizione\":\"12\"");
+			}
+
 			OrdineDao ordineDao=SingletonDatabaseManager.getInstance().getDaoFactory().getOrdineDAO();
 			ordineDao.updateIndirizzoConsegna(Long.parseUnsignedLong(String.valueOf(request.getSession().getAttribute("idAccount"))), idOrdine, jsonIndirizzoScelto);
 			System.out.println("Aggironamento dell'indirizzo di spedizione per l'ordine, andato a buon fine");
-			response.getWriter().write(jsonIndirizzoScelto);
+
+
+			ordineDao.updateSpesaSpedizione(Long.parseUnsignedLong(String.valueOf(request.getSession().getAttribute("idAccount"))), idOrdine, spesaSpedizione);	
+			System.out.println(String.valueOf(str));
+
+			response.getWriter().write(String.valueOf(str));
+
 	          response.getWriter().close();
 
 		}

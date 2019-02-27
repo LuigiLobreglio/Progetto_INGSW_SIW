@@ -60,6 +60,14 @@ prefix="c" %>
             }
         }
     </style>
+    
+    <script>			                              function mostraPagamento(){
+        $('div#scegliMetodoPagamentoPannello form').fadeIn();
+        $('html, body').animate({
+     		  scrollTop: $("div#scegliMetodoPagamentoPannello form").offset().top-200
+        }, 2000);
+	  
+ }</script>
 
                 </head>
 
@@ -191,10 +199,13 @@ prefix="c" %>
                                                                         </c:forEach>
                                                                     </table>
                                                                 </div>
+                                                       
+                                                                 <div id="spesaSpedizioneDisplay"class="col-md-3">
+                                                                </div>
                                                                 <div class="col-md-3">
                                                                     <div style="text-align: center;">
                                                                         <h3> Subtotale </h3>
-                                                                        <h3><span style="color:green;">${ordine.totaleOrdine} ${ordine.idOrdine}</span></h3>
+                                                                        <h3><span style="color:green;">${ordine.totaleOrdine} </span></h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -300,15 +311,17 @@ prefix="c" %>
                                                             	 <div id="spazio-indirizzo-scelto" class="col-md-4 col-sm-6 ">
                                                                             <div class=" thumbnail" >
                                                                                 <div class="displayAddressDiv" style="height: 155px; white-space:normal; overflow: hidden; text-overflow: ellipsis">
-                                                                                    <ul style="list-style-type: none;     padding-inline-start: 10px;">
+                                                                                    <ul id="listaDatiIndirizzoScelto"style="list-style-type: none;     padding-inline-start: 10px;">
                                                                                         <li><b>${indirizzoScelto.nomeDestinatario} ${indirizzoScelto.cognomeDestinatario}</b></li>
-                                                                                        <li> ${indirizzoScelto.stato},</li>
-                                                                                        <li> ${indirizzoScelto.citta} ${indirizzoScelto.codicePostale},</li>
-                                                                                        <li> ${indirizzoScelto.via} ${indirizzoScelto.numeroCivico},</li>
-                                                                                        <li> Indicazioni: ${indirizzoScelto.dettagli}.</li>
+                                                                                        <li>${indirizzoScelto.stato},</li>
+                                                                                        <li>${indirizzoScelto.citta},</li>
+                                                                                        <li>${indirizzoScelto.codicePostale},</li>
+                                                                                        <li>${indirizzoScelto.via} ${indirizzoScelto.numeroCivico},</li>
+                                                                                        <li>Indicazioni: ${indirizzoScelto.dettagli}.</li>
                                                                                     </ul>
                                                                                 </div>
                                                                            </div>
+                                                                           
                                                                            
                                                               	</div>
     
@@ -642,19 +655,27 @@ prefix="c" %>
 
                                             <div id="scegliMetodoPagamentoPannello" class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                        					<a id="scegliMetodoPagamentoBottone"
-                                        					                style="text-align: center; width:100%; display: none"
+                                                	<form id="datiPagamentoForm"action="" method="post" style="display: none">
+                                                
+                                                    <h4  class="panel-title">
+															<input type="hidden" name="idIndirizzo" value="${indirizzoScelto.idIndirizzo}">
+															<input type="hidden" name="totaleOrdine" value="${ordine.totaleOrdine}">
+								
+															<button id="scegliMetodoPagamentoBottone"
+                                        					                style="text-align: center; width:100%; "
                                         									data-toggle="collapse"
                                                                             data-parent="#accordion"
-                                                                            href="#collapseFour"
+                                                                            data-target="#collapseFour"
                                                                             class=" btn btn-primary btn-block"
-                                                                            
-
-                                                                            onclick="
-                                                                            document.getElementById('collapseFour').scrollIntoView()"> <b>Scegli un metodo di pagamento</b>
-                 											  </a>
+                                                                            onclick="                                                                    
+                                                                           	document.getElementById('collapseFour').scrollIntoView()"> 
+                 											 				<b>Scegli un metodo di pagamento</b>			
+															</button>
+														
+                 											  
                           				          </h4>
+                          				          																			</form>
+                          				          
                                                </div>
 
                                        
@@ -666,124 +687,11 @@ prefix="c" %>
 "></div>
 
     <!-- Include the PayPal JavaScript SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AZTN0LvIsUc_0ySlt6qv5_8Lpx7k1_svmMkOolWy6MjhG18SVZRHA2abulStkqUpcBFrNcxVt3TfJKEV&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZTN0LvIsUc_0ySlt6qv5_8Lpx7k1_svmMkOolWy6MjhG18SVZRHA2abulStkqUpcBFrNcxVt3TfJKEV&currency=EUR"></script>
 
     <script>
         // Render the PayPal button into #paypal-button-container
-        paypal.Buttons({
-            style: {
-                layout: 'vertical',
-                color:  'gold',
-                 shape:  'pill',
-                label:  'pay',
-                height: 40
-                
-            },
-            
-            // Set up the transaction
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                	  "intent": "CAPTURE",
-                	  "application_context": {
-                	    "return_url": "https://example.com",
-                	    "cancel_url": "https://example.com",
-                	    "brand_name": "BYMP",
-                	    
-                	    "landing_page": "BILLING",
-                	    "shipping_preference": "SET_PROVIDED_ADDRESS",
-                	    "user_action": "CONTINUE"
-                	  },
-                	  "purchase_units": [
-                	    {
-      
-                	      "amount": {
-                	        "currency_code": "USD",
-                	        "value": "230.00",
-                	        "breakdown": {
-                	          "item_total": {
-                	            "currency_code": "USD",
-                	            "value": "180.00"
-                	          },
-                	          "shipping": {
-                	            "currency_code": "USD",
-                	            "value": "30.00"
-                	          },
-                	          "handling": {
-                	            "currency_code": "USD",
-                	            "value": "10.00"
-                	          },
-                	          "tax_total": {
-                	            "currency_code": "USD",
-                	            "value": "20.00"
-                	          },
-                	          "shipping_discount": {
-                	            "currency_code": "USD",
-                	            "value": "10"
-                	          }
-                	        }
-                	      },
-                	      "items": [
-                	        {
-                	          "name": "T-Shirt",
-                	          "description": "Green XL",
-                	          "sku": "sku01",
-                	          "unit_amount": {
-                	            "currency_code": "USD",
-                	            "value": "90.00"
-                	          },
-                	          "tax": {
-                	            "currency_code": "USD",
-                	            "value": "10.00"
-                	          },
-                	          "quantity": "1",
-                	          "category": "PHYSICAL_GOODS"
-                	        },
-                	        {
-                	          "name": "Shoes",
-                	          "description": "Running, Size 10.5",
-                	          "sku": "sku02",
-                	          "unit_amount": {
-                	            "currency_code": "USD",
-                	            "value": "45.00"
-                	          },
-                	          "tax": {
-                	            "currency_code": "USD",
-                	            "value": "5.00"
-                	          },
-                	          "quantity": "2",
-                	          "category": "PHYSICAL_GOODS"
-                	        }
-                	      ],
-                	      "shipping": {
-                	        "method": "United States Postal Service",
-                	        "address": {
-                	          "name": {
-                	            "give_name":"John",
-                	            "surname":"Doe"
-                	          },
-                	          "address_line_1": "123 Townsend St",
-                	          "address_line_2": "Floor 6",
-                	          "admin_area_2": "San Francisco",
-                	          "admin_area_1": "CA",
-                	          "postal_code": "94107",
-                	          "country_code": "US"
-                	        }
-                	      }
-                	    }
-                	  ]
-                	});
-            },
-
-            // Finalize the transaction
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                });
-            }
-            
-      
-        }).render('#paypal-button-container');
+       
     </script>
     <br>
     	<p style="text-align: center;"><span>oppure</span></p>
@@ -951,9 +859,9 @@ prefix="c" %>
 			                                  event.preventDefault();
 			                                  updateAddress(this);
 
-		                                         $('div#scegliMetodoPagamentoPannello a').fadeIn();
+		                                         $('div#scegliMetodoPagamentoPannello form').fadeIn();
 				                                 $('html, body').animate({
-				                              		  scrollTop: $("div#scegliMetodoPagamentoPannello a").offset().top-200
+				                              		  scrollTop: $("div#scegliMetodoPagamentoPannello form").offset().top-200
 				                                 }, 2000);
 
 
@@ -968,17 +876,16 @@ prefix="c" %>
 			                                         url: $(formSubmitted).attr('action'),
 			                                         data: formData,
 			                                         success: function(response)  {
-
+															
 			                                             var indScelto = JSON.parse(response);
-
 
 			                                             $('#panel-body-scelto').css("display","block");
 			                                             $('#griglia-indirizzo-scelto').empty();
 			                                             
+			                                             $('div#spesaSpedizioneDisplay').empty();
 
-
-			                                                 $('#griglia-indirizzo-scelto').append(' <div id=\"spazio-indirizzo\" class=\"col-md-4 col-sm-6 \"> <div class=\" thumbnail\" > <div class=\"displayAddressDiv\" style=\"height: 155px; white-space:normal; overflow: hidden; text-overflow: ellipsis\"> <ul style=\"list-style-type: none; padding-inline-start: 10px;\"> <li><b>'+indScelto.nomeDestinatario+' '+indScelto.cognomeDestinatario+'</b></li> <li> '+indScelto.stato+',</li> <li> '+indScelto.citta+' '+indScelto.codicePostale+',</li> <li> '+indScelto.via+' '+indScelto.numeroCivico+',</li> <li> Indicazioni: '+indScelto.dettagli+'.</li> </ul> </div>  </div>\r\n\r\n </div>');
-
+			                                                 $('#griglia-indirizzo-scelto').append(' <div id=\"spazio-indirizzo\" class=\"col-md-4 col-sm-6 \"> <div class=\" thumbnail\" > <div class=\"displayAddressDiv\" style=\"height: 155px; white-space:normal; overflow: hidden; text-overflow: ellipsis\"> <ul id=\"listaDatiIndirizzoScelto\" style=\"list-style-type: none; padding-inline-start: 10px;\"> <li><b>'+indScelto.nomeDestinatario+' '+indScelto.cognomeDestinatario+'</b></li> <li>'+indScelto.stato+',</li> <li>'+indScelto.citta+',</li> <li>'+indScelto.codicePostale+',</li> <li>'+indScelto.via+' '+indScelto.numeroCivico+',</li> <li>Indicazioni: '+indScelto.dettagli+'.</li> </ul> </div>  </div>\r\n\r\n </div>');
+															 $('div#spesaSpedizioneDisplay').append(' <h3> Spese di spedizione </h3> <h3 id=\"spesaSpedizioneTesto\"><span style="color:green;">'+indScelto.spesaSpedizione+'</span></h3> </div>');
 			                                         }
 
 													
@@ -986,12 +893,160 @@ prefix="c" %>
 			                              }
 			                              
 			                              
+			                             
+			                              $('div#scegliMetodoPagamentoPannello').on('submit','form#datiPagamentoForm',function(event) {
+			                                  // Stop the browser from submitting the form.
+			                                  event.preventDefault();
+			                            
+			                                  var o = {};
+			                                  var a = $(this).serializeArray();
+			                                  $.each(a, function () {
+			                                      if (o[this.name]) {
+			                                          if (!o[this.name].push) {
+			                                              o[this.name] = [o[this.name]];
+			                                          }
+			                                          o[this.name].push(this.value || '');
+			                                      } else {
+			                                          o[this.name] = this.value || '';
+			                                      }
+			                                  });
+			                                  
+			                                  alert(o['totaleOrdine']);
+			                                  var titolo='BympDinamico';
+			                                  paypal.Buttons({
+			                                      style: {
+			                                          layout: 'vertical',
+			                                          color:  'gold',
+			                                           shape:  'pill',
+			                                          label:  'pay',
+			                                          height: 40
+			                                          
+			                                      },
+			                                      
+			                                      // Set up the transaction
+			                                      createOrder: function(data, actions) {
+
+														var data=$('ul#listaDatiIndirizzoScelto li').map(function(){
+		        											return $(this).text();
+		    												}).get();
+					                                  
+														data[1]=data[1].substring(0, data[1].length - 1);
+														data[2]=data[2].substring(0, data[2].length - 1);
+														data[3]=data[3].substring(0, data[3].length - 1);
+														data[4]=data[4].substring(0, data[4].length - 1);
+					                                  var spesaSpedizione=parseFloat($('h3#spesaSpedizioneTesto').text());
+														var totaleOrdine=parseFloat(o['totaleOrdine'])+spesaSpedizione;
+														alert(spesaSpedizione);
+			                                          return actions.order.create({
+			                                          	  "intent": "CAPTURE",
+			                                          	  "application_context": {
+			                                          	    "return_url": "https://example.com",
+			                                          	    "cancel_url": "https://example.com",
+			                                          	    "brand_name": "Bymp",
+			                                          	    
+			                                          	    "landing_page": "BILLING",
+			                                          	    "shipping_preference": "SET_PROVIDED_ADDRESS",
+			                                          	    "user_action": "CONTINUE"
+			                                          	  },
+			                                          	  "purchase_units": [
+			                                          	    {
+			                                
+			                                          	      "amount": {
+			                                          	        "currency_code": "EUR",
+			                                          	        "value": totaleOrdine,
+			                                          	       	 "breakdown": {
+			                                          	         "item_total": {
+			                                          	            "currency_code": "EUR",
+			                                          	            "value": parseFloat(o['totaleOrdine'])
+			                                          	          },
+			                                          	          "shipping": {
+			                                          	            "currency_code": "EUR",
+			                                          	            "value": spesaSpedizione
+			                                          	          }/*,
+			                                          	          "handling": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "10.00"
+			                                          	          },
+			                                          	          "tax_total": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "20.00"
+			                                          	          },
+			                                          	          "shipping_discount": {
+			                                          	            "currency_code": "EUR",
+			                                          	            "value": "10"
+			                                          	          }*/
+			                                          	        } 
+			                                          	      }
+			                                          	    /* ,
+			                                          	      "items": [
+			                                          	        {
+			                                          	          "name": "T-Shirt",
+			                                          	          "description": "Green XL",
+			                                          	          "sku": "sku01",
+			                                          	          "unit_amount": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "90.00"
+			                                          	          },
+			                                          	          "tax": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "10.00"
+			                                          	          },
+			                                          	          "quantity": "1",
+			                                          	          "category": "PHYSICAL_GOODS"
+			                                          	        },
+			                                          	        {
+			                                          	          "name": "Shoes",
+			                                          	          "description": "Running, Size 10.5",
+			                                          	          "sku": "sku02",
+			                                          	          "unit_amount": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "45.00"
+			                                          	          },
+			                                          	          "tax": {
+			                                          	            "currency_code": "USD",
+			                                          	            "value": "5.00"
+			                                          	          },
+			                                          	          "quantity": "2",
+			                                          	          "category": "PHYSICAL_GOODS"
+			                                          	        }
+			                                          	      ] */,
+			                                          	      "shipping": {
+			                                          	        "address": {
+			                                          	          "name": {
+			                                          	            "give_name":"John",
+			                                          	            "surname":"Doe"
+			                                          	          },
+			                                          	          "address_line_1": data[4],
+			                                          	          "admin_area_2": data[2],
+			                                          	          "postal_code": data[3],
+			                                          	          "country_code": "IT"
+			                                          	        }
+			                                          	      }
+			                                          	    }
+			                                          	  ]
+			                                          	});
+			                                      },
+
+			                                      // Finalize the transaction
+			                                      onApprove: function(data, actions) {
+			                                          return actions.order.capture().then(function(details) {
+			                                              // Show a success message to the buyer
+			                                              alert('Transaction completed by ' + details.payer.name.given_name + '!');
+			                                          });
+			                                      }
+			                                      
+			                                
+			                                  }).render('#paypal-button-container');
+
+
+			                              });
+			                              
+			                              
 			                              function mostraScelta(){
 			                              	
 			                          		$('#panel-body-scelto').css("display","block");
 
 			                              }
-			                              
 			                              
 			                 	
 			                                     

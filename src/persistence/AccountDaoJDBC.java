@@ -109,7 +109,7 @@ public class AccountDaoJDBC implements AccountDao {
 		try {
 			Account account;
 			PreparedStatement statement;
-			String query = "select * from account";
+			String query = "select * from account where idFacebook is null";
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {

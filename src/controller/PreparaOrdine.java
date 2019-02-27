@@ -49,7 +49,9 @@ public class PreparaOrdine extends HttpServlet {
 		System.out.println(request.getParameter("totaleOrdine").toString());
 		request.getSession().setAttribute("vociCarrello", vociCarrello);
 		Ordine ordine= new Ordine(Long.parseLong(request.getSession().getAttribute("idAccount").toString()), 0.0, Double.parseDouble(request.getParameter("totaleOrdine").toString()), "In_corso");
-
+		OrdineDao ordineDao=SingletonDatabaseManager.getInstance().getDaoFactory().getOrdineDAO();
+		Long idOrdine=ordineDao.save(ordine);
+		ordine.setCodice(idOrdine);
 		request.getSession().setAttribute("ordine", ordine);
 		response.sendRedirect("gestioneOrdine/checkout.jsp");
 
