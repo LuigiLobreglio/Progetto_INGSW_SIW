@@ -51,9 +51,34 @@ public class VoceProdottoDaoJDBC implements VoceProdottoDao {
 	}
 
 	@Override
-	public List<VoceProdotto> findAll() {
+	public int findByPrimaryKeys(Long idProd, Long idAccountProprietario) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		Connection connection = this.dataSource.getConnection();
+		try {
+			PreparedStatement statement;
+			String query = "select quantita from mydb.voceProdotto where voceProdotto.idProd="+idProd+" and voceProdotto.idAccountProprietario="+idAccountProprietario+"  ";
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+			
+				System.out.println(String.valueOf("esiste già nel carrello con quantita= "+result.getInt("quantita")));
+				return result.getInt("quantita");
+			}
+			else 
+				
+				return 0;
+			
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage());
+		}	 finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new PersistenceException(e.getMessage());
+			}
+		}
+		
 	}
 
 	@Override

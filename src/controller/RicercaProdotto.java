@@ -134,6 +134,7 @@ public class RicercaProdotto extends HttpServlet {
 				request.getSession().setAttribute("inizio", false);
 				RequestDispatcher rd = request.getRequestDispatcher("gestioneRicerca/vistaProdotti.jsp");
 				rd.forward(request, response);
+				
 			}
 			
 		}

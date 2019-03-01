@@ -1,8 +1,8 @@
-.product-image {
-  float: left;
-  width: 20%;
-}
+ /* 
+ 
+  .product-image {
 
+}
 .product-details {
   float: left;
   width: 37%;
@@ -10,7 +10,8 @@
 
 .product-price {
   float: left;
-  width: 12%;
+  padding-right:0px;
+  padding-left:0px;
 }
 
 .product-quantity {
@@ -28,6 +29,20 @@
   width: 12%;
   text-align: right;
 }
+*/
+.product-price {
+  float: left;
+  padding-right:0px;
+  padding-left:0px;
+}
+.product-price {
+  float: left;
+  padding-right:10px;
+  padding-left:0px;
+}
+
+
+
 
 /* This is used as the traditional .clearfix class */
 .group:before, .shopping-cart:before, .column-labels:before, .product:before, .totals-item:before,
@@ -49,10 +64,7 @@
 }
 
 /* Apply clearfix in a few places */
-/* Apply dollar signs */
-.product .product-price:before, .product .product-line-price:before, .totals-value:before {
-  content: '$';
-}
+
 
 /* Body/Header stuff */
 body {
@@ -92,7 +104,14 @@ label {
   text-align: center;
 }
 .product .product-image img {
-  width: 100px;
+	    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border-style: none;
+    border: 0;
 }
 .product .product-details .product-title {
   margin-right: 20px;
@@ -136,9 +155,7 @@ label {
   width: 21%;
   text-align: right;
 }
-.totals .totals-item-total {
-  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
-}
+
 
 .checkout {
   float: right;
@@ -155,73 +172,101 @@ label {
   background-color: #494;
 }
 
-/* Make adjustments for tablet */
-@media screen and (max-width: 650px) {
-  .shopping-cart {
-    margin: 0;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-  }
+
+@media screen and (max-width: 768px) {
 
   .column-labels {
     display: none;
   }
+      
+    .product-quantity:before {
+    content: "x";
+  }      
 
-  .product-image {
-    float: right;
-    width: auto;
-  }
-  .product-image img {
-    margin: 0 0 10px 10px;
-  }
+}
 
-  .product-details {
-    float: none;
-    margin-bottom: 10px;
-    width: auto;
-  }
 
+
+/* Make adjustments for tablet */
+/* 
+@media screen and (max-width: 600px) {
+ 
+  .product-image{
+  	width:100%;
+  } 
+  
+   .product-details{
+  	width:100%;
+  }
+  
   .product-price {
-    clear: both;
-    width: 70px;
-  }
+width:33%;    
+      }
+      
+    .product-quantity:before {
+    content: "x";
+  }      
 
   .product-quantity {
-    width: 100px;
+  width:33%;
   }
-  .product-quantity input {
-    margin-left: 20px;
-  }
-
-  .product-quantity:before {
-    content: 'x';
-  }
-
-  .product-removal {
-    width: auto;
-  }
-
-  .product-line-price {
+  
+    .product-line-price {
     float: right;
-    width: 70px;
+    margin-top: 10px;
+      width: 34%;
   }
+  
+  
+  
 }
+
+*/
 /* Make more adjustments for phone */
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 500px) {
+  
+  .product-price {
+  float: left;
+  padding-right:0px;
+  padding-left:10px;
+}
+  
+  .product-image{
+  	width:100%;
+  } 
+  
+   .product-details{
+  	width:100%;
+  }
+  
+  
+    .product-price {
+  	width:100%;
+      }
+  .product-price:after {
+    content: 'x';
+    
+      }
+  .product-quantity {
+  	width:100%;
+  }
+  
+    .product-quantity:before {
+    content: none;
+  }
+  
   .product-removal {
-    float: right;
+  width: 100%;
   }
 
   .product-line-price {
     float: right;
     clear: left;
-    width: auto;
     margin-top: 10px;
+  	width:100%;
   }
 
-  .product .product-line-price:before {
-    content: 'Item Total: $';
-  }
+
 
   .totals .totals-item label {
     width: 60%;
@@ -229,4 +274,4 @@ label {
   .totals .totals-item .totals-value {
     width: 40%;
   }
-}
+} 

@@ -1,5 +1,7 @@
 /**
- * 
+ * Javascript presente in tutte le pagine, 
+ * poichè riguardante il form di ricerca sulla barra di navigazione principale.
+ * Gestisce la visualizzazione di suggerimenti live, basati sull'input dell'utente.
  */
 
 function ricercaLive() {

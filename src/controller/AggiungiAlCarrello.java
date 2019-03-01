@@ -42,13 +42,24 @@ public class AggiungiAlCarrello extends HttpServlet {
 		// TODO Auto-generated method stub
 			
 		if(request.getSession().getAttribute("idAccount")!=null){
-			
-			System.out.println(request.getParameter("idProd").toString());
-			VoceProdotto voceProdotto=new VoceProdotto(Long.parseUnsignedLong(request.getParameter("idProd").toString()), Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()),1, request.getParameter("immagine").toString(), request.getParameter("nomeCommerciale").toString(), Double.parseDouble(request.getParameter("prezzo").toString()),false);
+
 			VoceProdottoDao voceDao = SingletonDatabaseManager.getInstance().getDaoFactory().getVoceProdottoDAO();
-			voceDao.save(voceProdotto);
+			int quantita=voceDao.findByPrimaryKeys(Long.parseUnsignedLong(request.getParameter("idProd").toString()), Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()));
 			
-			System.out.println("fino a qui tutto bene");
+			if(quantita == 0)
+			{
+				System.out.println("Non vi era un articolo uguale nel carrello, aggiunta");
+
+				VoceProdotto voceProdotto=new VoceProdotto(Long.parseUnsignedLong(request.getParameter("idProd").toString()), Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()),1, request.getParameter("immagine").toString(), request.getParameter("nomeCommerciale").toString(), Double.parseDouble(request.getParameter("prezzo").toString()),false);
+				voceDao.save(voceProdotto);
+			}
+			
+			else
+			{
+				voceDao.update(Long.parseUnsignedLong(request.getSession().getAttribute("idAccount").toString()), Long.parseUnsignedLong(request.getParameter("idProd").toString()), quantita+1);
+				System.out.println("Vi era un articolo uguale nel carrello, aggiornamento quantita");
+
+			}
 		
 		
 		request.getRequestDispatcher("/mostraCarrello").forward(request, response);

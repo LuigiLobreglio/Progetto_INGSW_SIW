@@ -66,6 +66,8 @@ public class AggiornaOrdine extends HttpServlet {
 				spesaSpedizione=6.00;
 		      // insert character value at offset 8
 		      str.insert(jsonIndirizzoScelto.length()-1, ",\"spesaSpedizione\":\"6\"");
+				request.getSession().setAttribute("spesaSpedizione", spesaSpedizione);
+
 			}
 			else {
 				

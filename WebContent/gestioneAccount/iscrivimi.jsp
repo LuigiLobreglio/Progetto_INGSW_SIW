@@ -133,12 +133,12 @@ $(document).ready(function() {
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servizi <span class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Cerca prodotti</a></li>
+							<li><a href="${pageContext.request.contextPath}/RicercaProdotto">Cerca prodotti</a></li>
 							<li><a href="#">Pianifica la tua dieta!</a></li>
 						</ul>
 					</li>
 					<li>
-                        <a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>
+                        <a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Carrello</a>
                         
                     </li>
                 </ul>
@@ -264,23 +264,6 @@ $(document).ready(function() {
 		        });
 		      }
 
-	/*
-	document.getElementById('custom-login-button').addEventListener('click', function (){
-		
-			FB.login(function(response) { 
-		    	console.log(response);
-
-			}, {
-				scope: 'email',
-				return_scopes:true
-				});
-			
-			
-		
-	});
-	
-	*/
-
 
 // Load the SDK asynchronously
 
@@ -330,7 +313,12 @@ $(document).ready(function() {
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="nome">Indirizzo Email</label>
 			<div class="col-sm-5">
-				<input id="emailID" class="form-control" name="email" type="email" required />
+				
+				  <small id="passwordHelpBlock" class="form-text text-muted">formato: alfanum@alfanum.alfa</small>				   
+			
+				<input id="emailID" class="form-control" name="email" type="email" required 
+									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!_*()@%&]).{8,}$" >
+				
 					<span id="stato_email"></span>
 			</div>
 	</div>	
@@ -362,74 +350,57 @@ $(document).ready(function() {
 	</form>
     
     </div>
+          <br><br><br>
     
-    	<!-- Footer -->
-	<footer>
-	
-		<h1 class="text-center">Find Us</h1>
-		<!-- Map -->
-		<div class="footer-map"></div>	
-			
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 footer-info-item text-center">
-						<p class="lead">
-							31 Spooner Street, Quahog, Rhode Island
-						</p>
-						<h2>Contattaci</h2>
-						<p class="lead"><span class="glyphicon glyphicon-phone-alt"></span> +39 333 33333333<br>
-						luigi.lobreglio@gmail.com <br> dux920@gmail.com </p>
-						
-					</div>
-				</div>
-			</div>
-
-		<!-- Footer Links -->
-		<div class="footer-info">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4 footer-info-item">
-						<h3>Informazioni</h3>
-						<ul class="list-unstyled">
-							<li><a href="#">Chi siamo</a></li>
-							<li><a href="#">Servizio clienti</a></li>
-							<li><a href="#">Informativa Privacy</a></li>
-						</ul>
-					</div>
-					<div class="col-sm-4 footer-info-item">
-						<h3>Il Mio Account</h3>
-						<ul class="list-unstyled">
-							<li><a href="#">Accedi</a></li>
-							<li><a href="#">La mia pianificazione alimentare</a></li>
-							<li><a href="#">Il mio carrello</a></li>
-							<li><a href="#">I miei ordini</a></li>
-						</ul>	
-					</div>
-					<div class="col-sm-4 footer-info-item">
-						<h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
-						<p>Iscriviti per ricevere offerte esclusive</p>
-						<div class="input-group">
-							<input type="email" class="form-control" placeholder="Inserisci il tuo indirizzo email">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									Sottoscrivi!
-								</button>
-							</span>
-						</div>
-					</div>
-				</div><!-- /.row -->
-			</div><!-- /.container -->
-        </div>
-        
-        <!-- Copyright etc -->
-        <div class="small-print">
-        	<div class="container">
-        		<p><a href="#">Termini &amp; Condizioni</a> | <a href="#">Informativa Privacy</a> | <a href="#">Contatti</a></p>
-        		<p>Copyright &copy; bymp.it 2019 </p>
-        	</div>
-        </div>
-        
-	</footer>
+       <!-- Footer -->
+      <footer>
+         <!-- Footer Links -->
+         <div class="footer-info">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-4 footer-info-item">
+                     <h3>Informazioni</h3>
+                     <ul class="list-unstyled">
+                        <li><a href="#">Chi siamo</a></li>
+                        <li><a href="#">Servizio clienti</a></li>
+                        <li><a href="#">Informativa Privacy</a></li>
+                     </ul>
+                  </div>
+                  <c:if test="${nome != null}">
+                     <div class="col-sm-4 footer-info-item">
+                        <h3><a style="color:black" href="#">Il Mio Account</a></h3>
+                        <ul class="list-unstyled">
+                           <li><a href="#">La mia pianificazione alimentare</a></li>
+                           <li><a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp">Il mio carrello</a></li>
+                           <li><a href="#">I miei ordini</a></li>
+                        </ul>
+                     </div>
+                  </c:if>
+                  <div class="col-sm-4 footer-info-item">
+                     <h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
+                     <p>Iscriviti per ricevere offerte esclusive</p>
+                     <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Inserisci il tuo indirizzo email">
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                        Sottoscrivi!
+                        </button>
+                        </span>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.row -->
+            </div>
+            <!-- /.container -->
+         </div>
+         <!-- Copyright etc -->
+         <div class="small-print">
+            <div class="container">
+               <p><a href="#">Termini &amp; Condizioni</a> | <a href="#">Informativa Privacy</a></p>
+               <p>Copyright &copy; bymp.it 2019 </p>
+            </div>
+         </div>
+      </footer>
 
 
 </body>

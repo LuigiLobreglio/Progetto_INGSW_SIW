@@ -831,3 +831,27 @@ button#pagamentoContrassegnoBottone.btn.btn-primary.btn-block:hover{
       text-shadow: 1px 1px 2px black, 0 0 15px black, 0 0 5px black;
     
 }
+
+img.thumbnail.zoom
+ {      
+-webkit-transition: all 0.35s ease-in-out;    
+-moz-transition: all 0.35s ease-in-out;    
+transition: all 0.35s ease-in-out;     
+cursor: -webkit-zoom-in;      
+cursor: -moz-zoom-in;      
+cursor: zoom-in;  
+}     
+
+img.thumbnail.zoom:hover,  
+img.thumbnail.zoom:active,   
+img.thumbnail.zoom:focus {
+/**adjust scale to desired size, 
+add browser prefixes**/
+-ms-transform: scale(2.0);    
+-moz-transform: scale(2.0);  
+-webkit-transform: scale(2.0);  
+-o-transform: scale(2.0);  
+transform: scale(2.0);    
+position:relative;      
+z-index:100;  
+}

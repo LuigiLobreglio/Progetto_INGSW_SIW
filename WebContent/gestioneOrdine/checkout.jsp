@@ -4,6 +4,7 @@
 prefix="c" %>
 
         <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
             <%
     response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
@@ -86,7 +87,7 @@ prefix="c" %>
                                     <span class="icon-bar"></span>
                                 </button>
                                 <div class="navbar-brand">
-                                    <span class="glyphicon glyphicon-cutlery"></span> <a class="titolo-logo" href="#"> BYMP</a> <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-cutlery"></span> <a class="titolo-logo" href="../index.jsp"> BYMP</a> <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
                             </div>
 
@@ -114,7 +115,7 @@ prefix="c" %>
 
                                 <ul class="nav navbar-nav navbar-center">
                                     <li class="active">
-                                        <a href="#">Pagina iniziale</a>
+                                        <a href="../index.jsp">Pagina iniziale</a>
                                     </li>
                                     <li>
                                         <a href="#">Prodotti</a>
@@ -200,12 +201,28 @@ prefix="c" %>
                                                                     </table>
                                                                 </div>
                                                        
-                                                                 <div id="spesaSpedizioneDisplay"class="col-md-3">
-                                                                </div>
+                                                                 
                                                                 <div class="col-md-3">
+                                                                 <c:if test="${spesaSpedizione == null}">
+                                                                <div style="text-align: center;" id="spesaSpedizioneDisplay"> </div>
+                                                                   </c:if>
+                                                               <c:if test="${spesaSpedizione != null}">
+                                                                <div style="text-align: center;" id="spesaSpedizioneDisplay">
+                                                                 <h3> Spese di spedizione </h3>
+                                                                 <h3 id="spesaSpedizioneTesto">
+                                                                 	<span style="color:green;">
+                                                                 	<fmt:formatNumber type="number" pattern="0.00" value="${spesaSpedizione}" /> €
+                                                                 </span>
+                                                                 </h3> 
+                                                                </div>
+                                                                   </c:if>
                                                                     <div style="text-align: center;">
                                                                         <h3> Subtotale </h3>
-                                                                        <h3><span style="color:green;">${ordine.totaleOrdine} </span></h3>
+                                                                        <h3>
+                                                                        <span style="color:green;">
+                                                                       	<fmt:formatNumber type="number" pattern="0.00" value="  ${ordine.totaleOrdine}" /> €
+                                                                         </span>
+                                                                         </h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -681,10 +698,7 @@ prefix="c" %>
                                        
                                                     <div id="collapseFour" class="panel-collapse collapse">
                                                         <div class="panel-body">
-                                                            <div id="paypal-button-container" style="
-    display: table;
-    margin: 0 auto;
-"></div>
+                                                            <div id="paypal-button-container" style=" display: table;margin: 0 auto;"></div>
 
     <!-- Include the PayPal JavaScript SDK -->
     <script src="https://www.paypal.com/sdk/js?client-id=AZTN0LvIsUc_0ySlt6qv5_8Lpx7k1_svmMkOolWy6MjhG18SVZRHA2abulStkqUpcBFrNcxVt3TfJKEV&currency=EUR"></script>
@@ -706,10 +720,7 @@ prefix="c" %>
 																				</button>
 																			</form>
                                                             <br/>
-                                                            <div style="text-align: left;">
-                                                                <br/> By submiting this order you are agreeing to our <a href="/legal/billing/">universal
-                                                billing agreement</a>, and <a href="/legal/terms/">terms of service</a>. If you have any questions about our products or services please contact us before placing this order.
-                                                            </div>
+                                                         
                                                             </div>
                                                         </div>
                                                     </div>
@@ -883,9 +894,8 @@ prefix="c" %>
 			                                             $('#griglia-indirizzo-scelto').empty();
 			                                             
 			                                             $('div#spesaSpedizioneDisplay').empty();
-
 			                                                 $('#griglia-indirizzo-scelto').append(' <div id=\"spazio-indirizzo\" class=\"col-md-4 col-sm-6 \"> <div class=\" thumbnail\" > <div class=\"displayAddressDiv\" style=\"height: 155px; white-space:normal; overflow: hidden; text-overflow: ellipsis\"> <ul id=\"listaDatiIndirizzoScelto\" style=\"list-style-type: none; padding-inline-start: 10px;\"> <li><b>'+indScelto.nomeDestinatario+' '+indScelto.cognomeDestinatario+'</b></li> <li>'+indScelto.stato+',</li> <li>'+indScelto.citta+',</li> <li>'+indScelto.codicePostale+',</li> <li>'+indScelto.via+' '+indScelto.numeroCivico+',</li> <li>Indicazioni: '+indScelto.dettagli+'.</li> </ul> </div>  </div>\r\n\r\n </div>');
-															 $('div#spesaSpedizioneDisplay').append(' <h3> Spese di spedizione </h3> <h3 id=\"spesaSpedizioneTesto\"><span style="color:green;">'+indScelto.spesaSpedizione+'</span></h3> </div>');
+															 $('div#spesaSpedizioneDisplay').append(' <h3> Spese di spedizione </h3> <h3 id=\"spesaSpedizioneTesto\"><span style=\"color:green;\">'+parseFloat(indScelto.spesaSpedizione).toFixed(2)+' €</span></h3>');
 			                                         }
 
 													
@@ -911,8 +921,8 @@ prefix="c" %>
 			                                      }
 			                                  });
 			                                  
-			                                  alert(o['totaleOrdine']);
 			                                  var titolo='BympDinamico';
+			                                  
 			                                  paypal.Buttons({
 			                                      style: {
 			                                          layout: 'vertical',
@@ -930,13 +940,14 @@ prefix="c" %>
 		        											return $(this).text();
 		    												}).get();
 					                                  
+														data[0]=data[0].substring(0, data[0].length - 1);
 														data[1]=data[1].substring(0, data[1].length - 1);
 														data[2]=data[2].substring(0, data[2].length - 1);
 														data[3]=data[3].substring(0, data[3].length - 1);
 														data[4]=data[4].substring(0, data[4].length - 1);
 					                                  var spesaSpedizione=parseFloat($('h3#spesaSpedizioneTesto').text());
+					                                  alert(spesaSpedizione);
 														var totaleOrdine=parseFloat(o['totaleOrdine'])+spesaSpedizione;
-														alert(spesaSpedizione);
 			                                          return actions.order.create({
 			                                          	  "intent": "CAPTURE",
 			                                          	  "application_context": {
@@ -1013,13 +1024,12 @@ prefix="c" %>
 			                                          	      "shipping": {
 			                                          	        "address": {
 			                                          	          "name": {
-			                                          	            "give_name":"John",
-			                                          	            "surname":"Doe"
+			                                          	            "give_name": data[0]
 			                                          	          },
 			                                          	          "address_line_1": data[4],
 			                                          	          "admin_area_2": data[2],
 			                                          	          "postal_code": data[3],
-			                                          	          "country_code": "IT"
+			                                          	          "country_code": data[1]
 			                                          	        }
 			                                          	      }
 			                                          	    }

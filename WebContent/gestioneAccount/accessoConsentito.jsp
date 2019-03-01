@@ -105,7 +105,7 @@ prefix="c" %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servizi <span class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Cerca prodotti</a></li>
+							<li><a href="${pageContext.request.contextPath}/RicercaProdotto">Cerca prodotti</a></li>
 							<li><a href="#">Pianifica la tua dieta!</a></li>
 						</ul>
 					</li>
@@ -134,78 +134,82 @@ prefix="c" %>
 		<p>Cosa vuoi fare?</p>    
 	</div>
     
-    <div class="container-fluid">
-   
-    </div>
+  <!-- Promos -->
+                <div class="container-fluid">
+
+                    <div class="row promo">
+                        <a href="#">
+                            <div class="col-md-6 promo-item item-1">
+                                <h3>
+                                    Pianifica la tua dieta!
+                                </h3>
+                            </div>
+                        </a>
+
+                        <a href="${pageContext.request.contextPath}/RicercaProdotto">
+                            <div class="col-md-6 promo-item item-2">
+                                <h3>
+                                    Cerca prodotti!
+                                </h3>
+                            </div>
+                        </a>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
     
-    	<!-- Footer -->
-	<footer>
-	
-		<h1 class="text-center">Find Us</h1>
-		<!-- Map -->
-		<div class="footer-map"></div>	
-			
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 footer-info-item text-center">
-						<p class="lead">
-							31 Spooner Street, Quahog, Rhode Island
-						</p>
-						<h2>Contattaci</h2>
-						<p class="lead"><span class="glyphicon glyphicon-phone-alt"></span> +39 333 33333333<br>
-						luigi.lobreglio@gmail.com <br> dux920@gmail.com </p>
-						
-					</div>
-				</div>
-			</div>
-
-		<!-- Footer Links -->
-		<div class="footer-info">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4 footer-info-item">
-						<h3>Informazioni</h3>
-						<ul class="list-unstyled">
-							<li><a href="#">Chi siamo</a></li>
-							<li><a href="#">Servizio clienti</a></li>
-							<li><a href="#">Informativa Privacy</a></li>
-						</ul>
-					</div>
-					<div class="col-sm-4 footer-info-item">
-						<h3>Il Mio Account</h3>
-						<ul class="list-unstyled">
-							<li><a href="#">Accedi</a></li>
-							<li><a href="#">La mia pianificazione alimentare</a></li>
-							<li><a href="#">Il mio carrello</a></li>
-							<li><a href="#">I miei ordini</a></li>
-						</ul>	
-					</div>
-					<div class="col-sm-4 footer-info-item">
-						<h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
-						<p>Iscriviti per ricevere offerte esclusive</p>
-						<div class="input-group">
-							<input type="email" class="form-control" placeholder="Inserisci il tuo indirizzo email">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="button">
-									Sottoscrivi!
-								</button>
-							</span>
-						</div>
-					</div>
-				</div><!-- /.row -->
-			</div><!-- /.container -->
-        </div>
-        
-        <!-- Copyright etc -->
-        <div class="small-print">
-        	<div class="container">
-        		<p><a href="#">Termini &amp; Condizioni</a> | <a href="#">Informativa Privacy</a> | <a href="#">Contatti</a></p>
-        		<p>Copyright &copy; bymp.it 2019 </p>
-        	</div>
-        </div>
-        
-	</footer>
-
+     <br><br><br>
+      <!-- Footer -->
+      <footer>
+         <!-- Footer Links -->
+         <div class="footer-info">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-4 footer-info-item">
+                     <h3>Informazioni</h3>
+                     <ul class="list-unstyled">
+                        <li><a href="#">Chi siamo</a></li>
+                        <li><a href="#">Servizio clienti</a></li>
+                        <li><a href="#">Informativa Privacy</a></li>
+                     </ul>
+                  </div>
+                  <c:if test="${nome != null}">
+                     <div class="col-sm-4 footer-info-item">
+                        <h3><a style="color:black" href="#">Il Mio Account</a></h3>
+                        <ul class="list-unstyled">
+                           <li><a href="#">La mia pianificazione alimentare</a></li>
+                           <li><a href="${pageContext.request.contextPath}/gestioneCarrello/vistaCarrello.jsp">Il mio carrello</a></li>
+                           <li><a href="#">I miei ordini</a></li>
+                        </ul>
+                     </div>
+                  </c:if>
+                  <div class="col-sm-4 footer-info-item">
+                     <h3><span class="glyphicon glyphicon-list-alt"></span> Newsletter</h3>
+                     <p>Iscriviti per ricevere offerte esclusive</p>
+                     <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Inserisci il tuo indirizzo email">
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                        Sottoscrivi!
+                        </button>
+                        </span>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.row -->
+            </div>
+            <!-- /.container -->
+         </div>
+         <!-- Copyright etc -->
+         <div class="small-print">
+            <div class="container">
+               <p><a href="#">Termini &amp; Condizioni</a> | <a href="#">Informativa Privacy</a></p>
+               <p>Copyright &copy; bymp.it 2019 </p>
+            </div>
+         </div>
+      </footer>
 
 
 </body>
